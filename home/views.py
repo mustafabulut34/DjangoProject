@@ -1,5 +1,7 @@
 from django.shortcuts import render
+from .models import Setting
 
 
 def index(request):
-    return render(request, 'index.html', {})
+    setting = Setting.objects.first()
+    return render(request, 'index.html', {'setting': setting})

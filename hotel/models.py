@@ -119,29 +119,3 @@ class ImageRoom(models.Model):
     def image_tag(self):
         return mark_safe('<img src="{}" height="50"/>'.format(self.image.url))
     image_tag.short_description = 'Image'
-
-
-class Setting(models.Model):
-    title = models.CharField(max_length=200)
-    keywords = models.CharField(max_length=255)
-    description = models.CharField(max_length=255)
-    company = models.CharField(max_length=80)
-    address = models.CharField(max_length=255)
-    phone = models.CharField(max_length=20)
-    fax = models.CharField(max_length=20)
-    email = models.EmailField()
-    smtpserver = models.CharField(max_length=255)
-    smtpemail = models.EmailField()
-    smtppassword = models.CharField(max_length=50)
-    smtpport = models.IntegerField()
-    image = models.ImageField(blank=False, upload_to='images/')
-    facebook = models.CharField(max_length=80)
-    instagram = models.CharField(max_length=80)
-    twitter = models.CharField(max_length=80)
-    aboutus = models.CharField(max_length=255)
-    contact = models.CharField(max_length=255)
-    references = models.CharField(max_length=255)
-    status = models.CharField(blank=True, max_length=5, choices=STATUS)
-
-    def __str__(self):
-        return self.title
