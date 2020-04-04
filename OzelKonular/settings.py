@@ -125,6 +125,10 @@ STATIC_URL = '/static/'
 
 CKEDITOR_UPLOAD_PATH = 'images/'
 CKEDITOR_IMAGE_BACKEND = 'pillow'
-
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': None,
+    }
+}
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')
