@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.html import mark_safe
+from ckeditor_uploader.fields import RichTextUploadingField
 
 STATUS = (
     ('True', 'Evet'),
@@ -51,7 +52,7 @@ class Hotel(models.Model):
     )
     title = models.CharField(max_length=30)
     keywords = models.CharField(max_length=255)
-    description = models.CharField(max_length=255)
+    description = RichTextUploadingField()
     image = models.ImageField(blank=True, upload_to='images/')
     category_id = models.ForeignKey(Category, on_delete=models.CASCADE)
     star = models.CharField(blank=True, max_length=10, choices=STAR)
@@ -79,7 +80,7 @@ class Hotel(models.Model):
 class Room(models.Model):
     hotel_id = models.ForeignKey(Hotel, on_delete=models.CASCADE)
     title = models.CharField(max_length=30)
-    description = models.CharField(max_length=255)
+    description = RichTextUploadingField()
     image = models.ImageField(blank=True, upload_to='images/')
     price = models.IntegerField(blank=False)
     status = models.CharField(blank=True, max_length=5, choices=STATUS)
