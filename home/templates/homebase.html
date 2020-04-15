@@ -1,52 +1,44 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-<meta charset="utf-8">
+    <title>{% block title %}{% endblock  %} </title>
+    <meta name="keywords" content="{% block keywords %}{% endblock  %}">
+    <meta name="description" content="{% block description %}{% endblock  %}">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:200,300,400,600,700&display=swap" rel="stylesheet">
 
-    <title>{% block title %}Foto paylaşım yorum değerlendirme Sitesi{% endblock %}</title>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="description" content="{% block description %}Foto paylaşım yorum değerlendirme Sitesi{% endblock %}">
-    <meta name="keywords" content="{% block keywords %}foto,manzara,düğün,araba{% endblock %}">
-    <meta name="author" content="Mesut Canpolat">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- styles -->
-    {% load static %}
-  <link href="{% static 'assets/css/bootstrap.css'%}" rel="stylesheet">
-  <link href="{% static 'assets/css/bootstrap-responsive.css'%}" rel="stylesheet">
-  <link href="{% static 'assets/css/prettyPhoto.css'%}" rel="stylesheet">
-  <link href="{% static 'assets/js/google-code-prettify/prettify.css'%}" rel="stylesheet">
-  <link href="{% static 'assets/css/flexslider.css'%}" rel="stylesheet">
-  <link href="{% static 'assets/css/style.css'%}" rel="stylesheet">
-  <link href="{% static 'assets/color/default.css'%}" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css?family=Droid+Serif:400,600,400italic|Open+Sans:400,600,700" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'assets/css/open-iconic-bootstrap.min.css' %} ">
+    <link rel="stylesheet" href="{% static 'assets/css/animate.css' %}">
+    
+    <link rel="stylesheet" href="{% static 'assets/css/owl.carousel.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/owl.theme.default.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/magnific-popup.css' %}">
 
-  <!-- fav and touch icons -->
-  <link rel="shortcut icon" href="{% static 'assets/ico/favicon.ico'%}">
-  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="{% static 'assets/ico/apple-touch-icon-144-precomposed.png'%}">
-  <link rel="apple-touch-icon-precomposed" sizes="114x114" href="{% static 'assets/ico/apple-touch-icon-114-precomposed.png'%}">
-  <link rel="apple-touch-icon-precomposed" sizes="72x72" href="{% static 'assets/ico/apple-touch-icon-72-precomposed.png'%}">
-  <link rel="apple-touch-icon-precomposed" href="{% static 'assets/ico/apple-touch-icon-57-precomposed.png'%}">
+    <link rel="stylesheet" href="{% static 'assets/css/aos.css' %}">
 
-  <!-- =======================================================
-    Theme Name: Lumia
-    Theme URL: https://bootstrapmade.com/lumia-bootstrap-business-template/
-    Author: BootstrapMade.com
-    Author URL: https://bootstrapmade.com
-  ======================================================= -->
+    <link rel="stylesheet" href="{% static 'assets/css/ionicons.min.css' %}">
 
- {% block head %} {% endblock %}
+    <link rel="stylesheet" href="{% static 'assets/css/bootstrap-datepicker.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/jquery.timepicker.css' %}">
+
+    
+    <link rel="stylesheet" href="{% static 'assets/css/flaticon.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/icomoon.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+    {% block head %} {% endblock  %}
 </head>
 
-
 <body>
-{% include 'header.html' %}
-{% block sidebar %} {% endblock %}
-{% block slider %}  {% endblock %}
-{% block content %} {% endblock %}
+    {% include 'header.html' %}
 
-{% include 'footer.html' %}
+    {% block slider %}{% endblock  %}
 
-{% block foot %} {% endblock %}
+    {% block content %}{% endblock  %}
+
+    {% include 'footer.html' %}
+    {% block footer %}{% endblock  %}
 </body>
 </html>

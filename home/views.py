@@ -1,33 +1,48 @@
 from django.shortcuts import render
 from .models import Setting, ContactForm, ContactFormMessage
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib import messages
 from hotel.models import Hotel
 
 
 def index(request):
     setting = Setting.objects.first()
-    sliderData = Hotel.objects.all()[:5]
-    return render(request, 'index.html', {'setting': setting, 'sliderData': sliderData})
+    page = 'index'
+
+    slides = Hotel.objects.all()[:5]
+    context = {'setting': setting, 'slides': slides, 'page': page}
+    return render(request, 'index.html', context)
 
 
 def hotel(request, id, slug):
     setting = Setting.objects.first()
-    sliderData = Hotel.objects.all()[:5]
-    return render(request, 'index.html', {'setting': setting, 'sliderData': sliderData})
+    page = 'index'
+
+    slides = Hotel.objects.all()[:5]
+    context = {'setting': setting, 'slides': slides, 'page': page}
+    return render(request, 'index.html', context)
 
 
 def aboutus(request):
     setting = Setting.objects.first()
-    return render(request, 'aboutus.html', {'setting': setting})
+    page = 'About'
+
+    context = {'setting': setting, 'page': page}
+    return render(request, 'aboutus.html', context)
 
 
 def references(request):
     setting = Setting.objects.first()
-    return render(request, 'references.html', {'setting': setting})
+    page = 'References'
+
+    context = {'setting': setting, 'page': page}
+    return render(request, 'references.html', context)
 
 
 def contact(request):
+    setting = Setting.objects.first()
+    page = 'Contact'
+
     if request.method == 'POST':
         form = ContactForm(request.POST)
         if form.is_valid():
@@ -42,6 +57,5 @@ def contact(request):
             return HttpResponseRedirect('/contact')
 
     form = ContactForm()
-    setting = Setting.objects.first()
-    context = {'setting': setting, 'form': form}
+    context = {'setting': setting, 'form': form, 'page': page}
     return render(request, 'contact.html', context)

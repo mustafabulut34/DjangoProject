@@ -1,60 +1,89 @@
-{% extends "homebase.html" %}
+{% extends 'homebase.html' %}
 {% load static %}
-{% block title %}Contact - {{ setting.company }}{% endblock %}
+
+{% block title %}{{page.title}} - {{ setting.company }}{% endblock %}
 {% block keywords %}{{ setting.keywords }} {% endblock %}
 {% block description %} {{setting.description}} {% endblock %}
 {% block head %}<link rel='shortcut icon' type='image/x-icon' href='{{setting.image.url}}'/>{% endblock  %}
 
-{% block sidebar %}
-    {% include "sidebar.html" %}
-{% endblock %}
-
 
 {% block content %}
-    <div class="container">
-        <div class="row">
-            <div class="">
-                <div class="section-title">
-                    <h3 class="title">Contact</h3>
-                </div>
-                {{setting.contact|safe}}
-            </div>
+    <section class="ftco-section contact-section bg-light">
+      <div class="container">
+       <div class="row d-flex mb-5 contact-info">
+        <div class="col-md-12 mb-4">
+          <h2 class="h3">Contact</h2>
         </div>
-        <div class="row">
-            <div class="section-title">
-                <h3 class="title">Contact Form</h3>
+        <div class="w-100"></div>
+          <div class="col-md-12 d-flex">
+          	<div class="info rounded bg-white p-4">
+              {{setting.contact|safe}}
             </div>
-            {% if messages %}
+          </div>
+        </div>
+        <div class="row d-flex mb-5 contact-info">
+          <div class="col-md-12 mb-4">
+            <h2 class="h3">Contact Information</h2>
+          </div>
+          <div class="w-100"></div>
+          <div class="col-md-3 d-flex">
+          	<div class="info rounded bg-white p-4">
+	            <p><span>Address:</span> {{ setting.address }}</p>
+	          </div>
+          </div>
+          <div class="col-md-3 d-flex">
+          	<div class="info rounded bg-white p-4">
+	            <p><span>Phone:</span> <a href="tel://{{ setting.phone }}"> {{ setting.phone }}</a></p>
+	          </div>
+          </div>
+          <div class="col-md-3 d-flex">
+          	<div class="info rounded bg-white p-4">
+	            <p><span>Email:</span> <a href="mailto:{{ setting.email }}">{{ setting.email }}</a></p>
+	          </div>
+          </div>
+          <div class="col-md-3 d-flex">
+          	<div class="info rounded bg-white p-4">
+	            <p><span>Fax:</span> <a href="fax:{{ setting.fax }}">{{ setting.fax }}</a></p>
+	          </div>
+          </div>
+        </div>
+        <div class="row block-9">
+          <div class="col-md-6 order-md-last d-flex">
+            <form action="" method="post" class="bg-white p-5 contact-form">
+              {% csrf_token %}
+              <div class="form-group">
+              {% if messages %}
                 {% for message in messages %}
                     <div class="alert alert-{{ message.tags }}" role="alert">
                         {{ message }}
                     </div>
                 {% endfor %}
-            {% endif %}
-            <form action="" method="post" class="contactForm">
-                {% csrf_token %}
-                <div class="row">
-                    <div class="span4 form-group">
-                        {{form.name}}
-                        <div class="validation"></div>
-                    </div>
-                    <div class="span4 form-group">
-                        {{form.email}}
-                        <div class="validation"></div>
-                    </div>
-                    <div class="span8 form-group">
-                        {{form.subject}}
-                        <div class="validation"></div>
-                    </div>
-                    <div class="span8 form-group">
-                        {{form.message}}
-                        <div class="validation"></div>
-                        <div class="text-center">
-                            <input type="submit" class="btn btn-theme" value="SEND MESSAGE">
-                        </div>
-                    </div>
-                </div>
+              {% endif %}
+              </div>
+              <div class="form-group">
+                {{form.name}}
+              </div>
+              <div class="form-group">
+                {{form.email}}
+              </div>
+              <div class="form-group">
+                {{form.subject}}
+              </div>
+              <div class="form-group">
+                {{form.message}}
+              </div>
+              <div class="form-group">
+                <input type="submit" value="Send Message" class="btn btn-primary py-3 px-5">
+              </div>
             </form>
+          
+          </div>
+
+          <div class="col-md-6 d-flex">
+          	<div id="map" class="bg-white"></div>
+          </div>
         </div>
-    </div>
-{% endblock %}
+      </div>
+    </section>
+
+{% endblock  %}

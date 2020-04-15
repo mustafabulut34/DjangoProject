@@ -1,17 +1,22 @@
-{% extends "homebase.html" %}
+{% extends 'homebase.html' %}
 {% load static %}
-{% block title %}References - {{ setting.company }}{% endblock %}
+
+{% block title %}{{page.title}} - {{ setting.company }}{% endblock %}
 {% block keywords %}{{ setting.keywords }} {% endblock %}
 {% block description %} {{setting.description}} {% endblock %}
 {% block head %}<link rel='shortcut icon' type='image/x-icon' href='{{setting.image.url}}'/>{% endblock  %}
 
-{% block sidebar %}
-    {% include "sidebar.html" %}
-{% endblock %}
-
-
 {% block content %}
-    <div class="container">
-        {{setting.references|safe}}
+<br><br>
+  <section class="ftco-section ftco-wrap-about ftco-no-pt ftco-no-pb">  
+		<div class="container" style="min-height:600px">
+			<div class="row d-flex mb-5 contact-info">
+        <div class="col-md-12 d-flex">
+        	<div class="info rounded bg-white p-4">
+            {{setting.references|safe}}
+          </div>
+        </div>
+      </div>
     </div>
-{% endblock %}
+  </section>
+{% endblock  %}
