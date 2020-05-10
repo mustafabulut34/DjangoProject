@@ -36,8 +36,8 @@
     <div class="row no-gutters slider-text d-flex align-itemd-center justify-content-center">
       <div class="col-md-9 ftco-animate text-center d-flex align-items-end justify-content-center">
       	<div class="text">
-          <p class="breadcrumbs mb-2"><span class="mr-2"><a href="{% url 'index' %}">Home</a></span>/ {% if page.lower == 'room' %}<span class="mr-2"><a href="{% url 'index' %}">Rooms /</a></span>{% endif %} <span class="mr-2">{{page}}</span></p>
-          <h1 class="mb-4 bread">{{page.upper}}</h1>
+          <p class="breadcrumbs mb-2"><span class="mr-2"><a href="{% url 'index' %}">Home</a></span>/ {% if page.lower == 'room' %}<span class="mr-2"><a href="{% url 'hotel' room.hotel_id.id room.hotel_id.slug %}">{{room.hotel_id}} /</a></span><span class="mr-2">{{room.title}}</span>{% else %}<span class="mr-2">{{page}}</span>{% endif %}</p>
+          <h1 class="mb-4 bread">{% if page.lower == 'room' %}{{room}} {% else %} {{page.upper}}{% endif %}</h1>
         </div>
       </div>
     </div>

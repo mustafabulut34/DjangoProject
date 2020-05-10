@@ -2,7 +2,7 @@ from django.shortcuts import render
 from .models import Setting, ContactForm, ContactFormMessage
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib import messages
-from hotel.models import Hotel, Category, Room
+from hotel.models import Hotel, Category, Room, ImageRoom
 
 
 def index(request):
@@ -24,7 +24,7 @@ def category(request, slug, id):
     setting = Setting.objects.first()
     getCat = Category.objects.get(id=id)
     page = str(getCat.title)
-    rooms = Room.objects.filter(id__in=Hotel.objects.filter(category=getCat))
+    rooms = Room.objects.filter(hotel_id__category=getCat)
     category = Category.objects.all()
     context = {'setting': setting, 'rooms': rooms,
                'page': page, 'category': category}
@@ -33,12 +33,32 @@ def category(request, slug, id):
 
 def hotel(request, slug, id):
     setting = Setting.objects.first()
+    category = Category.objects.all()
+    rooms = Room.objects.get(hotel_id=id)
+    page = rooms.hotel_id
+    context = {
+        'setting': setting,
+        'page': page,
+        'category': category,
+        'rooms': rooms
+    }
     return render(request, 'index.html', context)
 
 
-def room(request, slug, id):
+def room(request, hotelslug, roomslug, id):
     setting = Setting.objects.first()
-    return render(request, 'index.html', context)
+    room = Room.objects.get(id=id)
+    images = ImageRoom.objects.filter(room_id=id)
+    page = 'room'
+    category = Category.objects.all()
+    context = {
+        'setting': setting,
+        'page': page,
+        'category': category,
+        'room': room,
+        'images': images,
+    }
+    return render(request, 'room_detail.html', context)
 
 
 def aboutus(request):
