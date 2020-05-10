@@ -10,11 +10,13 @@ def index(request):
     page = 'index'
     category = Category.objects.all()
     slides = Hotel.objects.all()[:5]
+    rooms = Room.objects.all().order_by('?')[:6]
     context = {
         'setting': setting,
         'slides': slides,
         'page': page,
-        'category': category}
+        'category': category,
+        'rooms': rooms}
     return render(request, 'index.html', context)
 
 
