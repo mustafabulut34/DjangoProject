@@ -1,0 +1,44 @@
+
+
+
+
+{% extends 'homebase.html' %}
+{% load static %}
+
+{% block title %}Search Rooms{% endblock %}
+{% block keywords %}Search rooms{% endblock %}
+{% block description %} Search Rooms {% endblock %}
+{% block head %}<link rel='shortcut icon' type='image/x-icon' href='{{setting.image.url}}'/>{% endblock  %}
+
+{% block content %}
+<div class="ftco-section" style="min-height: 760px;">
+    <div class="container">
+        <div class="row">
+            <table class="table">
+                <thead class="thead-dark">
+                  <tr>
+                    <th scope="col">Image</th>
+                    <th scope="col">Room</th>
+                    <th scope="col">Hotel</th>
+                    <th scope="col">Category</th>
+                    <th scope="col">Price</th>
+                  </tr>
+                </thead>
+                <tbody>
+                {% for room in rooms %}
+                  <tr>
+                    <th scope="row"> <img src="{{ room.image.url }}" alt="{{ room.description }}" style="height:100px;"> </th>
+                    <td style="vertical-align: middle;">{{ room.title }}</td>
+                    <td style="vertical-align: middle;">{{ room.hotel_id.title }}</td>
+                    <td style="vertical-align: middle;">{{ room.hotel_id.category }}</td>
+                    <td style="vertical-align: middle;">{{ room.price }}</td>
+                  </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>
+{% endblock  %}
+

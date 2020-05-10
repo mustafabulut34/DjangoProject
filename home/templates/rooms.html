@@ -2,9 +2,9 @@
 {% extends 'homebase.html' %}
 {% load static %}
 
-{% block title %}{{ category.title }}{% endblock %}
-{% block keywords %}{{ category.keywords }} {% endblock %}
-{% block description %} {{category.description}} {% endblock %}
+{% block title %}{{ rooms.first.hotel_id.category }}{% endblock %}
+{% block keywords %}{{ rooms.first.hotel_id.category.keywords }} {% endblock %}
+{% block description %} {{ rooms.first.hotel_id.category.description }} {% endblock %}
 {% block head %}<link rel='shortcut icon' type='image/x-icon' href='{{setting.image.url}}'/>{% endblock  %}
 
 {% block content %}

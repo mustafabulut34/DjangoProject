@@ -1,8 +1,8 @@
 {% extends 'homebase.html' %}
 {% load static %}
 
-{% block title %}{{ room.title }}{% endblock %}
-{% block keywords %}{{ room.keywords }} {% endblock %}
+{% block title %}{{room.hotel_id.title}} - {{ room.title }}{% endblock %}
+{% block keywords %}{{ room.keywords }},{{room.hotel_id.keywords}} {% endblock %}
 {% block description %} {{room.description}} {% endblock %}
 {% block head %}
   <link rel='shortcut icon' type='image/x-icon' href='{{setting.image.url}}'/>

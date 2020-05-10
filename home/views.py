@@ -3,6 +3,7 @@ from .models import Setting, ContactForm, ContactFormMessage
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib import messages
 from hotel.models import Hotel, Category, Room, ImageRoom, CommentForm, Comment
+from .forms import SearchForm
 
 
 def index(request):
@@ -75,6 +76,26 @@ def room(request, hotelslug, roomslug, id):
         'comments': comments
     }
     return render(request, 'room_detail.html', context)
+
+
+def search(request):
+    print("Search:")
+    if request.method == 'POST':
+        form = SearchForm(request.POST)
+        print(form)
+        if form.is_valid():
+            category = Category.objects.all()
+            query = form.cleaned_data['query']
+            rooms = Room.objects.filter(title__icontains=query)
+            context = {
+                'category': category,
+                'rooms': rooms,
+                'page': 'Search Rooms'
+            }
+            print("finished!1")
+            return render(request, 'rooms_search.html', context)
+    print("finished!2")
+    return HttpResponseRedirect("/")
 
 
 def aboutus(request):
