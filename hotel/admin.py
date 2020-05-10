@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Category, Hotel, Room, User, ImageHotel, ImageRoom
+from .models import Category, Hotel, Room, User, ImageHotel, ImageRoom, Comment
 from mptt.admin import DraggableMPTTAdmin
 
 
@@ -74,16 +74,6 @@ class RoomAdmin(admin.ModelAdmin):
     readonly_fields = ['image_tag']
 
 
-class UserAdmin(admin.ModelAdmin):
-    list_display = ['full_Name', 'role', 'status']
-    list_filter = ['role', 'status']
-    list_editable = ['status']
-    list_display_links = ['full_Name']
-
-    def full_Name(self, obj):
-        return obj.name + ' ' + obj.surname
-
-
 class ImageHotelAdmin(admin.ModelAdmin):
     list_display = ['title', 'hotel_id', 'image_tag']
     list_filter = ['hotel_id']
@@ -96,9 +86,16 @@ class ImageRoomAdmin(admin.ModelAdmin):
     readonly_fields = ['image_tag']
 
 
+class CommentAdmin(admin.ModelAdmin):
+    list_display = ['subject', 'comment',
+                    'user', 'rate', 'status', 'created_at']
+    list_filter = ['status', 'room_id', 'rate']
+    list_editable = ['status']
+
+
 admin.site.register(Category, CategoryAdmin2)
 admin.site.register(Hotel, HotelAdmin)
 admin.site.register(Room, RoomAdmin)
-admin.site.register(User, UserAdmin)
+admin.site.register(Comment, CommentAdmin)
 #admin.site.register(ImageHotel, ImageHotelAdmin)
 #admin.site.register(ImageRoom, ImageRoomAdmin)

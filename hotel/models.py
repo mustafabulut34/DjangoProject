@@ -1,5 +1,7 @@
 from django.db import models
 from django.utils.html import mark_safe
+from django.forms import ModelForm, TextInput, Textarea, EmailInput, NumberInput
+from django.contrib.auth.models import User
 from ckeditor_uploader.fields import RichTextUploadingField
 from mptt.models import MPTTModel, TreeForeignKey
 
@@ -7,20 +9,6 @@ STATUS = (
     ('True', 'Evet'),
     ('False', 'Hayır'),
 )
-
-
-class User(models.Model):
-    name = models.CharField(max_length=20)
-    surname = models.CharField(max_length=20)
-    email = models.EmailField(blank=False)
-    password = models.CharField(max_length=50)
-    role = models.CharField(max_length=30)
-    status = models.CharField(blank=True, max_length=10, choices=STATUS)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
-    def __str__(self):
-        return self.name+' '+self.surname
 
 
 class Category(MPTTModel):
@@ -104,6 +92,35 @@ class Room(models.Model):
     def image_tag(self):
         return mark_safe('<img src="{}" height="50"/>'.format(self.image.url))
     image_tag.short_description = 'Image'
+
+
+class Comment(models.Model):
+    COMMENT_STATUS = (
+        ('New', 'New'),
+        ('True', 'True'),
+        ('False', 'False'),
+    )
+    comment = models.CharField(max_length=255, blank=True)
+    subject = models.CharField(max_length=50, blank=True)
+    rate = models.IntegerField()
+    room = models.ForeignKey(Room, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    ip = models.CharField(max_length=20)
+    status = models.CharField(max_length=10,
+                              blank=True, choices=COMMENT_STATUS, default='New')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+
+class CommentForm(ModelForm):
+    class Meta:
+        model = Comment
+        fields = ('rate', 'subject', 'comment')
+        widgets = {
+            'rate': NumberInput(attrs={'class': 'form-control', 'min': 1, 'max': 5, 'placeholder': 'Rate'}),
+            'subject': TextInput(attrs={'class': 'form-control', 'placeholder': 'Subject'}),
+            'comment': Textarea(attrs={'class': 'form-control', 'placeholder': 'Comment', 'rows': '5'}),
+        }
 
 
 class ImageHotel(models.Model):

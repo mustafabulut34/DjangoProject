@@ -2,7 +2,7 @@ from django.shortcuts import render
 from .models import Setting, ContactForm, ContactFormMessage
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib import messages
-from hotel.models import Hotel, Category, Room, ImageRoom
+from hotel.models import Hotel, Category, Room, ImageRoom, CommentForm, Comment
 
 
 def index(request):
@@ -51,12 +51,28 @@ def room(request, hotelslug, roomslug, id):
     images = ImageRoom.objects.filter(room_id=id)
     page = 'room'
     category = Category.objects.all()
+    comments = Comment.objects.filter(
+        room_id=id, status=True).order_by('-created_at')
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            data = Comment()
+            data.rate = form.cleaned_data['rate']
+            data.subject = form.cleaned_data['subject']
+            data.comment = form.cleaned_data['comment']
+            data.ip = request.META.get('REMOTE_ADDR')
+            data.save()
+            messages.success(request, "Thank you!")
+            return HttpResponseRedirect('')
+    form = CommentForm()
     context = {
         'setting': setting,
         'page': page,
         'category': category,
         'room': room,
         'images': images,
+        'form': form,
+        'comments': comments
     }
     return render(request, 'room_detail.html', context)
 

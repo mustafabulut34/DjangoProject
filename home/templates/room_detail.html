@@ -4,7 +4,15 @@
 {% block title %}{{ room.title }}{% endblock %}
 {% block keywords %}{{ room.keywords }} {% endblock %}
 {% block description %} {{room.description}} {% endblock %}
-{% block head %}<link rel='shortcut icon' type='image/x-icon' href='{{setting.image.url}}'/>{% endblock  %}
+{% block head %}
+  <link rel='shortcut icon' type='image/x-icon' href='{{setting.image.url}}'/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <style>
+    .checked {
+      color: orange;
+    }
+  </style>
+{% endblock  %}
 
 {% block content %}
     <section class="ftco-section">
@@ -41,41 +49,69 @@
           		</div>
 
           		<div class="col-md-12 properties-single ftco-animate mb-5 mt-4">
-          			<h4 class="mb-4">Review &amp; Ratings</h4>
+          			<h4 class="mb-4">Comments</h4>
           			<div class="row">
-          				<div class="col-md-6">
-          					<form method="post" class="star-rating">
-										  <div class="form-check">
-												<input type="checkbox" class="form-check-input" id="exampleCheck1">
-												<label class="form-check-label" for="exampleCheck1">
-													<p class="rate"><span><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i> 100 Ratings</span></p>
-												</label>
-										  </div>
-										  <div class="form-check">
-									      <input type="checkbox" class="form-check-input" id="exampleCheck1">
-									      <label class="form-check-label" for="exampleCheck1">
-									    	   <p class="rate"><span><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star-o"></i> 30 Ratings</span></p>
-									      </label>
-										  </div>
-										  <div class="form-check">
-									      <input type="checkbox" class="form-check-input" id="exampleCheck1">
-									      <label class="form-check-label" for="exampleCheck1">
-									      	<p class="rate"><span><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star-o"></i><i class="icon-star-o"></i> 5 Ratings</span></p>
-									     </label>
-										  </div>
-										  <div class="form-check">
-										    <input type="checkbox" class="form-check-input" id="exampleCheck1">
-									      <label class="form-check-label" for="exampleCheck1">
-									      	<p class="rate"><span><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star-o"></i><i class="icon-star-o"></i><i class="icon-star-o"></i> 0 Ratings</span></p>
-									      </label>
-										  </div>
-										  <div class="form-check">
-									      <input type="checkbox" class="form-check-input" id="exampleCheck1">
-									      <label class="form-check-label" for="exampleCheck1">
-									      	<p class="rate"><span><i class="icon-star"></i><i class="icon-star-o"></i><i class="icon-star-o"></i><i class="icon-star-o"></i><i class="icon-star-o"></i> 0 Ratings</span></p>
-										    </label>
-										  </div>
-										</form>
+          				<div class="col-md-12">
+                      <form action="/hotel/addcomment/{{room.id}}" method="post" class="bg-light p-5 contact-form">
+                        {% csrf_token %}
+                        <div class="form-group">
+                        {% if messages %}
+                          {% for message in messages %}
+                              <div class="alert alert-{{ message.tags }}" role="alert">
+                                  {{ message }}
+                              </div>
+                          {% endfor %}
+                        {% endif %}
+                        </div>
+                          <div class="form-group">
+                          
+                          <ul class="rate-area">
+                          	<input type="radio" id="5-star" name="rate" value="5" /><label for="5-star" title="Amazing">5 stars</label>
+                          	<input type="radio" id="4-star" name="rate" value="4" /><label for="4-star" title="Good">4 stars</label>
+                          	<input type="radio" id="3-star" name="rate" value="3" /><label for="3-star" title="Average">3 stars</label>
+                          	<input type="radio" id="2-star" name="rate" value="2" /><label for="2-star" title="Not Good">2 stars</label>
+                            <input type="radio" id="1-star" name="rate" value="1" /><label for="1-star" title="Bad">1 star</label>
+                          </ul>
+                        </div>
+                        <div class="form-group">
+                          {{form.subject}}
+                        </div>
+                        <div class="form-group">
+                          {{form.comment}}
+                        </div>
+                        <div class="form-group">
+                        {% if user.id is not None %}
+                          <input type="submit" value="Send Message" class="btn btn-primary py-3 px-5">
+                        {% else %}
+                          Yorum eklemek için giriş yapınız!
+                        {% endif %}
+                        </div>
+                      </form>
+                      
+              <br>
+              <h3 class="mb-5">{{comments.count}} Comments</h3>
+              <ul class="comment-list">
+                {% for comment in comments %}
+                  <li class="comment bg-light">
+                  <div class="vcard bio">
+                    <img src="https://simpleicon.com/wp-content/uploads/user1.png" alt="Image placeholder">
+                  </div>
+                  <div class="comment-body">
+                    <h3>{{comment.user}}</h3>
+                    <h5>{{comment.subject}}</h5>
+                    <div class="meta">{{comment.created_at}}</div>&ensp;
+                    <span class="fa fa-star {% if comment.rate >= 1 %}checked{% endif %}"></span>
+                    <span class="fa fa-star {% if comment.rate >= 2 %}checked{% endif %}"></span>
+                    <span class="fa fa-star {% if comment.rate >= 3 %}checked{% endif %}"></span>
+                    <span class="fa fa-star {% if comment.rate >= 4 %}checked{% endif %}"></span>
+                    <span class="fa fa-star {% if comment.rate >= 5 %}checked{% endif %}"></span>
+                    <p>{{comment.comment}}</p>
+                  </div>
+                  </li>
+                {% endfor %}
+              </ul>
+            
+
           				</div>
           			</div>
           		</div>
