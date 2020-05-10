@@ -2,46 +2,54 @@ from django.shortcuts import render
 from .models import Setting, ContactForm, ContactFormMessage
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib import messages
-from hotel.models import Hotel
+from hotel.models import Hotel, Category
 
 
 def index(request):
     setting = Setting.objects.first()
     page = 'index'
-
+    category = Category.objects.all()
     slides = Hotel.objects.all()[:5]
-    context = {'setting': setting, 'slides': slides, 'page': page}
+    context = {
+        'setting': setting,
+        'slides': slides,
+        'page': page,
+        'category': category}
     return render(request, 'index.html', context)
 
 
 def hotel(request, id, slug):
     setting = Setting.objects.first()
     page = 'index'
-
+    category = Category.objects.all()
     slides = Hotel.objects.all()[:5]
-    context = {'setting': setting, 'slides': slides, 'page': page}
+    context = {'setting': setting, 'slides': slides,
+               'page': page, 'category': category}
     return render(request, 'index.html', context)
 
 
 def aboutus(request):
     setting = Setting.objects.first()
     page = 'About'
+    category = Category.objects.all()
 
-    context = {'setting': setting, 'page': page}
+    context = {'setting': setting, 'page': page, 'category': category}
     return render(request, 'aboutus.html', context)
 
 
 def references(request):
     setting = Setting.objects.first()
     page = 'References'
+    category = Category.objects.all()
 
-    context = {'setting': setting, 'page': page}
+    context = {'setting': setting, 'page': page, 'category': category}
     return render(request, 'references.html', context)
 
 
 def contact(request):
     setting = Setting.objects.first()
     page = 'Contact'
+    category = Category.objects.all()
 
     if request.method == 'POST':
         form = ContactForm(request.POST)
@@ -57,5 +65,6 @@ def contact(request):
             return HttpResponseRedirect('/contact')
 
     form = ContactForm()
-    context = {'setting': setting, 'form': form, 'page': page}
+    context = {'setting': setting, 'form': form,
+               'page': page, 'category': category}
     return render(request, 'contact.html', context)

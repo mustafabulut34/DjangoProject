@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils.html import mark_safe
 from ckeditor_uploader.fields import RichTextUploadingField
+from mptt.models import MPTTModel, TreeForeignKey
 
 STATUS = (
     ('True', 'Evet'),
@@ -22,20 +23,29 @@ class User(models.Model):
         return self.name+' '+self.surname
 
 
-class Category(models.Model):
+class Category(MPTTModel):
     title = models.CharField(max_length=30)
     keywords = models.CharField(max_length=255)
     description = models.CharField(max_length=255)
     image = models.ImageField(blank=True, upload_to='images/')
     status = models.CharField(max_length=10, choices=STATUS)
     slug = models.SlugField()
-    parent_id = models.ForeignKey(
+    parent = TreeForeignKey(
         'self', blank=True, null=True, related_name='children', on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    class MPTTMeta:
+        level_attr = 'mptt_level'
+        order_insertion_by = ['title']
+
     def __str__(self):
-        return self.title
+        cat = [self.title]
+        prnt = self.parent
+        while prnt is not None:
+            cat.append(prnt.title)
+            prnt = prnt.parent
+        return ' -> '.join(cat[::-1])
 
     def image_tag(self):
         return mark_safe('<img src="{}" height="50"/>'.format(self.image.url))
@@ -54,7 +64,7 @@ class Hotel(models.Model):
     keywords = models.CharField(max_length=255)
     description = RichTextUploadingField()
     image = models.ImageField(blank=True, upload_to='images/')
-    category_id = models.ForeignKey(Category, on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
     star = models.CharField(blank=True, max_length=10, choices=STAR)
     address = models.CharField(max_length=80)
     city = models.CharField(max_length=20)

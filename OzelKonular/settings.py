@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'ckeditor_uploader',
     'hotel.apps.HotelConfig',
     'home.apps.HomeConfig',
+    'mptt',
 ]
 
 MIDDLEWARE = [
