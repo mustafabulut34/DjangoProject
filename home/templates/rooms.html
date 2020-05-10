@@ -1,0 +1,35 @@
+
+{% extends 'homebase.html' %}
+{% load static %}
+
+{% block title %}{{ setting.title }}{% endblock %}
+{% block keywords %}{{ setting.keywords }} {% endblock %}
+{% block description %} {{setting.description}} {% endblock %}
+{% block head %}<link rel='shortcut icon' type='image/x-icon' href='{{setting.image.url}}'/>{% endblock  %}
+
+{% block content %}
+<section class="ftco-section ftco-no-pb ftco-room">
+	<div class="container-fluid px-0">
+
+		<div class="row no-gutters">
+		{% for room in rooms %}
+			<div class="col-lg-6">
+				<div class="room-wrap d-md-flex ftco-animate">
+					<a href="{% url 'room' room.id room.hotel_id.slug room.slug %}" class="img" style="background-image: url({{room.image.url}});"></a>
+					<div class="half left-arrow d-flex align-items-center">
+						<div class="text p-4 text-center">
+							<h2 class="mb-3"><a href="{% url 'hotel' room.hotel_id.id room.hotel_id.slug %}" style="color:black">{{room.hotel_id.title}}</a></h2>
+							<p class="star mb-0"><span class="ion-ios-star"></span><span class="ion-ios-star"></span><span class="ion-ios-star"></span><span class="ion-ios-star"></span><span class="ion-ios-star"></span></p>
+							<p class="mb-0"><span class="price mr-1">${{room.price}}</span> <span class="per">per night</span></p>
+    						<h3 class="mb-3"><a href="{% url 'room' room.id room.hotel_id.slug room.slug %}">{{room.title}}</a></h3>
+    						<p class="pt-1"><a href="{% url 'room' room.id room.hotel_id.slug room.slug %}" class="btn-custom px-3 py-2 rounded">View Details <span class="icon-long-arrow-right"></span></a></p>
+						</div>
+					</div>
+				</div>
+			</div>
+		{% endfor %}
+		</div>
+	</div>
+</section>
+{% endblock  %}
+

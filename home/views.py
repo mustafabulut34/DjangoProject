@@ -2,7 +2,7 @@ from django.shortcuts import render
 from .models import Setting, ContactForm, ContactFormMessage
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib import messages
-from hotel.models import Hotel, Category
+from hotel.models import Hotel, Category, Room
 
 
 def index(request):
@@ -18,13 +18,24 @@ def index(request):
     return render(request, 'index.html', context)
 
 
-def hotel(request, id, slug):
+def category(request, slug, id):
     setting = Setting.objects.first()
-    page = 'index'
+    getCat = Category.objects.get(id=id)
+    page = str(getCat.title)
+    rooms = Room.objects.filter(id__in=Hotel.objects.filter(category=getCat))
     category = Category.objects.all()
-    slides = Hotel.objects.all()[:5]
-    context = {'setting': setting, 'slides': slides,
+    context = {'setting': setting, 'rooms': rooms,
                'page': page, 'category': category}
+    return render(request, 'rooms.html', context)
+
+
+def hotel(request, slug, id):
+    setting = Setting.objects.first()
+    return render(request, 'index.html', context)
+
+
+def room(request, slug, id):
+    setting = Setting.objects.first()
     return render(request, 'index.html', context)
 
 

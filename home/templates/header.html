@@ -16,7 +16,7 @@
             <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
               {% load mptt_tags %}
               {% recursetree category %}
-                <a class="dropdown-item" href="/category/{{node.slug}}">{{ node.title }}</a>
+                <a class="dropdown-item" href="{% url 'category' node.id node.slug %}">{{ node.title }}</a>
               {% endrecursetree %}
             </div>
           </div>
