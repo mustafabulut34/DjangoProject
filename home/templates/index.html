@@ -4,9 +4,37 @@
 {% block title %}{{ setting.title }}{% endblock %}
 {% block keywords %}{{ setting.keywords }} {% endblock %}
 {% block description %} {{setting.description}} {% endblock %}
-{% block head %}<link rel='shortcut icon' type='image/x-icon' href='{{setting.image.url}}'/>{% endblock  %}
+{% block head %}
+    <link rel='shortcut icon' type='image/x-icon' href='{{setting.image.url}}'/>
+    
+    <!-- jQuery UI !-->
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
+    
+{% endblock  %}
 
 
 {% block slider %} {%include 'slider.html'%} {% endblock  %}
 
 {% block content %} {%include 'content.html'%} {% endblock  %}
+
+{% block footer %}
+    <!-- jQuery !-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"> </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+    <script>
+        $(function() {
+          $("#query").autocomplete({
+            source: "/search_box/",
+            select: function (event, ui) { //item selected
+              AutoCompleteSelectHandler(event, ui)
+            },
+            minLength: 2,
+          });
+        });
+
+        function AutoCompleteSelectHandler(event, ui)
+        {
+          var selectedObj = ui.item;
+        }
+    </script>
+{% endblock %}

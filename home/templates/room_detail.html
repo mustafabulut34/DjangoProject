@@ -25,12 +25,14 @@
           	<div class="row">
           		<div class="col-md-12 ftco-animate">
           			<div class="single-slider owl-carousel">
-                        <div class="room-img" style="background-image: url({{room.image.url}});"></div>
-                        {% for image in images %}
-          				    <div class="item">
-          				    	<div class="room-img" style="background-image: url({{image.image.url}});"></div>
-          				    </div>
-                        {% endfor %}
+                  <div class="item">
+                    <div class="room-img" style="width:700px; background-image: url({{room.image.url}});"></div>
+                  </div>
+                  {% for image in images %}
+          				  <div class="item">
+          				    <div class="room-img" style="background-image: url({{image.image.url}});"></div>
+          				  </div>
+                  {% endfor %}
           			</div>
           		</div>
           		<div class="col-md-12 room-single mt-4 mb-5 ftco-animate">
@@ -81,9 +83,9 @@
                         </div>
                         <div class="form-group">
                         {% if user.id is not None %}
-                          <input type="submit" value="Send Message" class="btn btn-primary py-3 px-5">
+                          <input type="submit" value="Send Commend" class="btn btn-primary py-3 px-5">
                         {% else %}
-                          Yorum eklemek için giriş yapınız!
+                          Login for comment!
                         {% endif %}
                         </div>
                       </form>

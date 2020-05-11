@@ -4,6 +4,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib import messages
 from hotel.models import Hotel, Category, Room, ImageRoom, CommentForm, Comment
 from .forms import SearchForm
+import json
 
 
 def index(request):
@@ -84,7 +85,13 @@ def search(request):
         if form.is_valid():
             category = Category.objects.all()
             query = form.cleaned_data['query']
-            rooms = Room.objects.filter(title__icontains=query)
+            catid = form.cleaned_data['catid']
+            if catid != 0:
+                rooms = Room.objects.filter(
+                    title__icontains=query, hotel_id__category=catid)
+            else:
+                rooms = Room.objects.filter(
+                    title__icontains=query)
             context = {
                 'category': category,
                 'rooms': rooms,
@@ -93,6 +100,22 @@ def search(request):
             }
             return render(request, 'rooms_search.html', context)
     return HttpResponseRedirect("/")
+
+
+def search_box(request):
+    if request.is_ajax():
+        q = request.GET.get('term', '')
+        rooms = Room.objects.filter(title__icontains=q)
+        results = []
+        for room in rooms:
+            room_json = {}
+            room_json = room.title
+            results.append(room_json)
+        data = json.dumps(results)
+    else:
+        data = 'fail'
+    mimetype = 'application/json'
+    return HttpResponse(data, mimetype)
 
 
 def aboutus(request):

@@ -1,14 +1,15 @@
-
-
-
-
 {% extends 'homebase.html' %}
 {% load static %}
+{% load mptt_tags %}
 
 {% block title %}Search Rooms{% endblock %}
 {% block keywords %}Search rooms{% endblock %}
 {% block description %} Search Rooms {% endblock %}
-{% block head %}<link rel='shortcut icon' type='image/x-icon' href='{{setting.image.url}}'/>{% endblock  %}
+{% block head %}
+  <link rel='shortcut icon' type='image/x-icon' href='{{setting.image.url}}'/>
+    <!-- jQuery UI !-->
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
+{% endblock  %}
 
 {% block content %}
 <section class="ftco-booking ftco-section ftco-no-pt ftco-no-pb">
@@ -18,11 +19,29 @@
 				<form action="/search/" class="booking-form aside-stretch" method="POST">
 				{% csrf_token %}
         			<div class="row">
+						    <div class="col-md d-flex py-md-4">
+        					<div class="form-group align-self-stretch d-flex align-items-end">
+        						<div class="wrap align-self-stretch py-3 px-6">
+		      						<label for="#">Category</label>
+		      						<div class="form-field">
+		        						<div class="select-wrap">
+		        	    			  <div class="icon"><span class="ion-ios-arrow-down"></span></div>
+		        	            <select name="catid" id="catid" class="form-control">
+												    <option value=0>All</option>
+											      {% recursetree category %}
+		        	                <option value={{node.id}}>{{node.title}}</option>
+											      {% endrecursetree %}
+		        	            </select>
+		        	          </div>
+			    	          </div>
+			    	        </div>
+	            	  </div>
+        			  </div>
         				<div class="col-md d-flex py-md-4">
         					<div class="form-group align-self-stretch d-flex align-items-end">
         						<div class="wrap align-self-stretch py-3 px-4">
 			    					<label for="#">Search Title</label>
-			    					<input type="text" name="query" class="form-control" placeholder="Search..." {% if lastForm %} value="{{lastForm}}"{% endif %}>
+			    					<input type="text" id="query" name="query" class="form-control" placeholder="Search..." {% if lastForm %} value="{{lastForm}}"{% endif %}>
 		    					</div>
 		    				</div>
         				</div>
@@ -41,26 +60,6 @@
 			    					<input type="text" class="form-control checkout_date" placeholder="Check-out">
 		    					</div>
 		    				</div>
-        				</div>
-        				<div class="col-md d-flex py-md-4">
-        					<div class="form-group align-self-stretch d-flex align-items-end">
-        						<div class="wrap align-self-stretch py-3 px-4">
-		      						<label for="#">Room</label>
-		      						<div class="form-field">
-		        						<div class="select-wrap">
-		        	    			        <div class="icon"><span class="ion-ios-arrow-down"></span></div>
-		        	            			<select name="" id="" class="form-control">
-		        	            				<option value="">Suite</option>
-		        	            				<option value="">Family Room</option>
-		        	            				<option value="">Deluxe Room</option>
-		        	            				<option value="">Classic Room</option>
-		        	        					<option value="">Superior Room</option>
-		        	            				<option value="">Luxury Room</option>
-		        	            			</select>
-		        	          			</div>
-			    	          		</div>
-			    	        	</div>
-	            	  		</div>
         				</div>
         				<div class="col-md d-flex py-md-4">
         					<div class="form-group align-self-stretch d-flex align-items-end">
@@ -115,7 +114,7 @@
                     <td style="vertical-align: middle;"><a href="{% url 'room' room.id room.hotel_id.slug room.slug %}">{{ room.title }}</a></td>
                     <td style="vertical-align: middle;">{{ room.hotel_id.title }}</td>
                     <td style="vertical-align: middle;">{{ room.hotel_id.category }}</td>
-                    <td style="vertical-align: middle;">{{ room.price }}</td>
+                    <td style="vertical-align: middle;">${{ room.price }}</td>
                   </tr>
                 {% endfor %}
                 {% else %}
@@ -135,3 +134,24 @@
 </div>
 {% endblock  %}
 
+{% block footer %}
+    <!-- jQuery !-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"> </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+    <script>
+        $(function() {
+          $("#query").autocomplete({
+            source: "/search_box/",
+            select: function (event, ui) { //item selected
+              AutoCompleteSelectHandler(event, ui)
+            },
+            minLength: 2,
+          });
+        });
+
+        function AutoCompleteSelectHandler(event, ui)
+        {
+          var selectedObj = ui.item;
+        }
+    </script>
+{% endblock  %}
