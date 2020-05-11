@@ -96,7 +96,7 @@ def search(request):
                 'category': category,
                 'rooms': rooms,
                 'page': 'Search Rooms',
-                'lastForm': query
+                'lastForm': form
             }
             return render(request, 'rooms_search.html', context)
     return HttpResponseRedirect("/")

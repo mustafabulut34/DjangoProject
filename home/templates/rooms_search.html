@@ -29,7 +29,7 @@
 		        	            <select name="catid" id="catid" class="form-control">
 												    <option value=0>All</option>
 											      {% recursetree category %}
-		        	                <option value={{node.id}}>{{node.title}}</option>
+		        	                <option value={{node.id}} {% if lastForm.catid.value == node.id|stringformat:"i" %}selected{% endif %}>{{node.title}}</option>
 											      {% endrecursetree %}
 		        	            </select>
 		        	          </div>
@@ -41,7 +41,7 @@
         					<div class="form-group align-self-stretch d-flex align-items-end">
         						<div class="wrap align-self-stretch py-3 px-4">
 			    					<label for="#">Search Title</label>
-			    					<input type="text" id="query" name="query" class="form-control" placeholder="Search..." {% if lastForm %} value="{{lastForm}}"{% endif %}>
+			    					<input type="text" id="query" name="query" class="form-control" placeholder="Search..." {% if lastForm %} value="{{lastForm.query.value}}"{% endif %}>
 		    					</div>
 		    				</div>
         				</div>
