@@ -17,7 +17,7 @@ class Category(MPTTModel):
     description = models.CharField(max_length=255)
     image = models.ImageField(blank=True, upload_to='images/')
     status = models.CharField(max_length=10, choices=STATUS)
-    slug = models.SlugField()
+    slug = models.SlugField(null=False, unique=True)
     parent = TreeForeignKey(
         'self', blank=True, null=True, related_name='children', on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -38,6 +38,9 @@ class Category(MPTTModel):
     def image_tag(self):
         return mark_safe('<img src="{}" height="50"/>'.format(self.image.url))
     image_tag.short_description = 'Image'
+
+    def get_absolute_url(self):
+        return reverse("category_detail", kwargs={"slug": self.slug})
 
 
 class Hotel(models.Model):
@@ -63,7 +66,7 @@ class Hotel(models.Model):
     email = models.EmailField()
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)
     status = models.CharField(max_length=10, choices=STATUS)
-    slug = models.SlugField()
+    slug = models.SlugField(null=False, unique=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -73,6 +76,9 @@ class Hotel(models.Model):
     def image_tag(self):
         return mark_safe('<img src="{}" height="50"/>'.format(self.image.url))
     image_tag.short_description = 'Image'
+
+    def get_absolute_url(self):
+        return reverse("category_detail", kwargs={"slug": self.slug})
 
 
 class Room(models.Model):
@@ -82,7 +88,7 @@ class Room(models.Model):
     image = models.ImageField(blank=True, upload_to='images/')
     price = models.IntegerField(blank=False)
     status = models.CharField(blank=True, max_length=5, choices=STATUS)
-    slug = models.SlugField()
+    slug = models.SlugField(null=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -92,6 +98,9 @@ class Room(models.Model):
     def image_tag(self):
         return mark_safe('<img src="{}" height="50"/>'.format(self.image.url))
     image_tag.short_description = 'Image'
+
+    def get_absolute_url(self):
+        return reverse("category_detail", kwargs={"slug": self.slug})
 
 
 class Comment(models.Model):
