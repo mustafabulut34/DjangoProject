@@ -79,10 +79,8 @@ def room(request, hotelslug, roomslug, id):
 
 
 def search(request):
-    print("Search:")
     if request.method == 'POST':
         form = SearchForm(request.POST)
-        print(form)
         if form.is_valid():
             category = Category.objects.all()
             query = form.cleaned_data['query']
@@ -90,11 +88,10 @@ def search(request):
             context = {
                 'category': category,
                 'rooms': rooms,
-                'page': 'Search Rooms'
+                'page': 'Search Rooms',
+                'lastForm': query
             }
-            print("finished!1")
             return render(request, 'rooms_search.html', context)
-    print("finished!2")
     return HttpResponseRedirect("/")
 
 
