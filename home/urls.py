@@ -10,6 +10,9 @@ urlpatterns = [
     path('references/', views.references, name="references"),
     path('contact/', views.contact, name="contact"),
     path('search/', views.search, name="search"),
-    path('search_box/', views.search_box, name="search_box")
+    path('search_box/', views.search_box, name="search_box"),
+    path('login/', views.login, name="login"),
+    path('logout/', views.logout, name="logout"),
+    path('signup/', views.sign_up, name="sign_up")
 
 ]

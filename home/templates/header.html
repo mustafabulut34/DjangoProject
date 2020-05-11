@@ -25,6 +25,52 @@
         <li class="nav-item"><a href="{% url 'aboutus'%}" class="nav-link">About Us</a></li>
         <li class="nav-item"><a href="{% url 'contact'%}" class="nav-link">Contact</a></li>
       </ul>
+      <ul class="navbar-nav mr-right">
+      {% if user.id is None %}
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Login
+            </a>
+            <div class="dropdown-menu p-3">
+              {% if messages %}
+                {% for message in messages %}
+                  <div class="alert alert-{{ message.tags }}" role="alert">
+                    {{ message }}
+                  </div>
+                {% endfor %}
+              {% endif %}
+              <form action="{% url 'login' %}" method="post" accept-charset="UTF-8" class="form-horizontal">
+                {% csrf_token %}
+                <input class="form-control login" type="text" name="username" placeholder="Username">
+                <input class="form-control login" type="password" name="password" placeholder="Password">
+                <input class="btn btn-primary" type="submit" name="submit" value="Login">
+              </form>
+              <a href="{% url 'sign_up' %}" style="color:black;">
+                Sign up
+              </a>
+            </div>
+        </li>
+      {% else %}
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <big>{% if user.first_name %}{{user.first_name}}{% else %}{{user.username}}{% endif %}</big>
+            </a>
+            <div class="dropdown-menu p-3">
+              {% if messages %}
+                {% for message in messages %}
+                  <div class="alert alert-{{ message.tags }}" role="alert">
+                    {{ message }}
+                  </div>
+                {% endfor %}
+              {% endif %}
+              <a href="{% url 'logout' %}" style="color:black;">Logout</a><br>
+              <a href="{% url 'logout' %}" style="color:black;">Logout</a><br>
+              <a href="{% url 'logout' %}" style="color:black;">Logout</a><br>
+              <a href="{% url 'logout' %}" style="color:black;">Logout</a><br>
+            </div>
+        </li>
+      {% endif %}
+      </ul>
     </div>
   </div>
 </nav>

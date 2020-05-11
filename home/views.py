@@ -2,6 +2,7 @@ from django.shortcuts import render
 from .models import Setting, ContactForm, ContactFormMessage
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib import messages
+from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from hotel.models import Hotel, Category, Room, ImageRoom, CommentForm, Comment
 from .forms import SearchForm
 import json
@@ -28,23 +29,27 @@ def category(request, slug, id):
     page = str(getCat.title)
     rooms = Room.objects.filter(hotel_id__category=getCat)
     category = Category.objects.all()
-    context = {'setting': setting, 'rooms': rooms,
-               'page': page, 'category': category}
+    context = {
+        'setting': setting,
+        'rooms': rooms,
+        'page': page,
+        'category': category}
     return render(request, 'rooms.html', context)
 
 
 def hotel(request, slug, id):
     setting = Setting.objects.first()
     category = Category.objects.all()
-    rooms = Room.objects.get(hotel_id=id)
-    page = rooms.hotel_id
+    rooms = Room.objects.filter(hotel_id=id)
+    page = rooms.first().hotel_id.title
+    print("======\n"+str(rooms))
     context = {
         'setting': setting,
         'page': page,
         'category': category,
         'rooms': rooms
     }
-    return render(request, 'index.html', context)
+    return render(request, 'rooms.html', context)
 
 
 def room(request, hotelslug, roomslug, id):
@@ -116,6 +121,37 @@ def search_box(request):
         data = 'fail'
     mimetype = 'application/json'
     return HttpResponse(data, mimetype)
+
+
+def login(request):
+    url = request.META.get('HTTP_REFERER')
+    username = request.POST['username']
+    password = request.POST['password']
+    user = authenticate(request, username=username, password=password)
+    print("=========================================================")
+    print("User: "+username)
+    print("Password: "+password)
+    print("All: "+str(user))
+    print("=========================================================")
+    if user is not None:
+        auth_login(request, user)
+        # Redirect to a success page.
+        messages.success(request, "Login succesfully!")
+    else:
+        # Return an 'invalid login' error message.
+        messages.warning(request, "Wrong username or password!")
+    return HttpResponseRedirect(url)
+
+
+def logout(request):
+    auth_logout(request)
+    messages.success(request, "Logout succesfully!")
+    return HttpResponseRedirect("/")
+
+
+def sign_up(request):
+    url = request.META.get('HTTP_REFERER')
+    return HttpResponseRedirect(url)
 
 
 def aboutus(request):
