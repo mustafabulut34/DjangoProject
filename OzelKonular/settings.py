@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'hotel.apps.HotelConfig',
     'home.apps.HomeConfig',
     'mptt',
+    'user.apps.UserConfig'
 ]
 
 MIDDLEWARE = [
