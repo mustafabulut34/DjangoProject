@@ -4,7 +4,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib import messages
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from hotel.models import Hotel, Category, Room, ImageRoom, CommentForm, Comment
-from .forms import SearchForm
+from .forms import SearchForm, SignUpForm
 import json
 
 
@@ -128,11 +128,6 @@ def login(request):
     username = request.POST['username']
     password = request.POST['password']
     user = authenticate(request, username=username, password=password)
-    print("=========================================================")
-    print("User: "+username)
-    print("Password: "+password)
-    print("All: "+str(user))
-    print("=========================================================")
     if user is not None:
         auth_login(request, user)
         # Redirect to a success page.
@@ -150,8 +145,25 @@ def logout(request):
 
 
 def sign_up(request):
-    url = request.META.get('HTTP_REFERER')
-    return HttpResponseRedirect(url)
+    if request.method == "POST":
+        form = SignUpForm(request.POST)
+        if form.is_valid():
+            form.save()
+            user = authenticate(
+                username=form.cleaned_data['username'], password=form.cleaned_data['password1'])
+            auth_login(request, user)
+            return HttpResponseRedirect("/")
+
+    form = SignUpForm()
+    setting = Setting.objects.first()
+    category = Category.objects.all()
+    context = {
+        'setting': setting,
+        'page': 'Sign Up',
+        'category': category,
+        'form': form
+    }
+    return render(request, 'sign_up.html', context)
 
 
 def aboutus(request):
