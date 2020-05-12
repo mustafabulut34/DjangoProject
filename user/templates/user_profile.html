@@ -1,50 +1,48 @@
 {% extends 'homebase.html' %}
 {% load static %}
 {% block content %}
-<br>
-<p>{% include 'user_panel.html' %}</p>
-
-<div class="container" style="min-height:600px;">
-    <div class="row">
-
-        <div class="col-md-9">
-            <p>
-            <table class="table">
+<section class="ftco-section ftco-no-pb ftco-room">
+	<div class="container px-0">
+		<div class="row no-gutters">
+            <p>{% include 'user_panel.html' %}</p>
+            <div class="col-md-9 clearfix table-responsive">
                 <p>
-                <h2 style="text-align:center;">User Information</h2>
-                    <tr>
-                        <th scope=""></th>
-                        <td><img src="{{profile.image.url}}"></td>
-                    </tr>
-                    <tr>
-                        <th scope="">Name Surname:</th>
-                        <td>{{profile.user.firstname}} {{profile.user.lastname}} {{profile.user.username}}</td>
-                    </tr>
-                    <tr>
-                        <th scope="">Email:</th>
-                        <td>{{profile.email}}</td>
-                    </tr>
-                    <tr>
-                        <th scope="">Phone:</th>
-                        <td>{{profile.phone}}</td>
-                    </tr>
-                    <tr>
-                        <th scope="">Address:</th>
-                        <td>{{profile.address}}</td>
-                    </tr>
-                    <tr>
-                        <th scope="">City:</th>
-                        <td>{{profile.city}}</td>
-                    </tr>
-                    <tr>
-                        <th scope="">Country:</th>
-                        <td>{{profile.country}}</td>
-                    </tr>
+                <table class="table">
+                    <p>
+                    <h2 style="text-align:center;">User Information</h2>
+                        <tr>
+                            <td colspan="2" style="text-align:center;"><img src="{{profile.image.url}}" class="img-responsive"></td>
+                        </tr>
+                        <tr>
+                            <th scope="">Name Surname:</th>
+                            <td>{{profile.user.firstname}} {{profile.user.lastname}} {{profile.user.username}}</td>
+                        </tr>
+                        <tr>
+                            <th scope="">Email:</th>
+                            <td>{{profile.email}}</td>
+                        </tr>
+                        <tr>
+                            <th scope="">Phone:</th>
+                            <td>{{profile.phone}}</td>
+                        </tr>
+                        <tr>
+                            <th scope="">Address:</th>
+                            <td>{{profile.address}}</td>
+                        </tr>
+                        <tr>
+                            <th scope="">City:</th>
+                            <td>{{profile.city}}</td>
+                        </tr>
+                        <tr>
+                            <th scope="">Country:</th>
+                            <td>{{profile.country}}</td>
+                        </tr>
+                    </p>
+                </table>
                 </p>
-            </table>
-            </p>
-        </div>
-    </div>
-</div>
-
+            </div>
+		</div>
+	</div>
+</section>
+<br>
 {% endblock  %}
