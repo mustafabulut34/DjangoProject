@@ -42,7 +42,6 @@ def hotel(request, slug, id):
     category = Category.objects.all()
     rooms = Room.objects.filter(hotel_id=id)
     page = rooms.first().hotel_id.title
-    print("======\n"+str(rooms))
     context = {
         'setting': setting,
         'page': page,
