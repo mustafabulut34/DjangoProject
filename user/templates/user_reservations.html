@@ -1,0 +1,70 @@
+
+
+
+
+{% extends 'homebase.html' %}
+{% load static %}
+{% block content %}
+<section class="ftco-section ftco-no-pb ftco-room">
+	<div class="container px-0">
+		<div class="row no-gutters">
+            <p>{% include 'user_panel.html' %}</p>
+            <div class="col-md-9 clearfix table-responsive">
+                <p>
+                <p style="color:black"><h3>Founded {{reservations.count}} reservation{{reservations.count | pluralize}}:</h3></p>
+                <table class="table">
+                    <thead class="thead-dark">
+                      <tr>
+                        <th scope="col">Hotel</th>
+                        <th scope="col">Room</th>
+                        <th scope="col">First Name</th>
+                        <th scope="col">Last Name</th>
+                        <th scope="col">Total</th>
+                        <th scope="col">Check-in</th>
+                        <th scope="col">Days</th>
+                        <th scope="col">Status</th>
+                        <th scope="col"></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                    {% if reservations%}
+                    {% for reservation in reservations %}
+                      <tr>
+                        <td style="vertical-align: middle;"><a href="{% url 'hotel' reservation.room.hotel_id.id reservation.room.hotel_id.slug %}">{{reservation.room.hotel_id}}</a></td>
+                        <td style="vertical-align: middle;"><a href="{% url 'room' reservation.room.id reservation.room.hotel_id.slug reservation.room.slug %}">{{ reservation.room }}</a></td>
+                        <td style="vertical-align: middle;">{{ reservation.name }}</td>
+                        <td style="vertical-align: middle;">{{ reservation.surname }}</td>
+                        <td style="vertical-align: middle;">{{ reservation.total }}</td>
+                        <td style="vertical-align: middle;">{{ reservation.checkin }}</td>
+                        <td style="vertical-align: middle;">{{ reservation.days }}</td>
+                        <td style="vertical-align: middle;">{{ reservation.status }}</td>
+                        <td style="vertical-align: middle;"><a href="{% url 'user:reservation_detail' reservation.id %}" class="btn btn-primary">Detail</a></td>
+                      </tr>
+                    {% endfor %}
+                    {% else %}
+                      <tr>
+                        <th scope="row"> - </th>
+                        <td style="vertical-align: middle;">-</td>
+                        <td style="vertical-align: middle;">-</td>
+                        <td style="vertical-align: middle;">-</td>
+                        <td style="vertical-align: middle;">-</td>
+                        <td style="vertical-align: middle;">-</td>
+                        <td style="vertical-align: middle;">-</td>
+                        <td style="vertical-align: middle;">-</td>
+                        <td style="vertical-align: middle;">-</td>
+                        <td style="vertical-align: middle;">-</td>
+                        <td style="vertical-align: middle;">-</td>
+                        <td style="vertical-align: middle;">-</td>
+                        <td style="vertical-align: middle;">-</td>
+                        <td style="vertical-align: middle;">-</td>
+                      </tr>
+                    {% endif %}
+                    </tbody>
+                </table>
+                </p>
+            </div>
+		</div>
+	</div>
+</section>
+<br>
+{% endblock  %}

@@ -1,0 +1,63 @@
+{% extends 'homebase.html' %}
+{% load static %}
+{% block content %}
+<section class="ftco-section ftco-no-pb ftco-room">
+	<div class="container px-0">
+		<div class="row no-gutters">
+            <p>{% include 'user_panel.html' %}</p>
+            <div class="col-md-9 clearfix table-responsive">
+                <p>
+                <table class="table">
+                    <p>
+                        <tr>
+                            <td colspan="2" style="text-align:center;"><img src="{{reservation.room.image.url}}" class="img-responsive" style="height:250px; border-radius: 20%;"></td>
+                        </tr>
+                        <tr>
+                            <th scope="">Hotel:</th>
+                            <td><a href="{% url 'hotel' reservation.room.hotel_id.id reservation.room.hotel_id.slug %}">{{reservation.room.hotel_id}}</a></td>
+                        </tr>
+                        <tr>
+                            <th scope="">Room:</th>
+                            <td><a href="{% url 'room' reservation.room.id reservation.room.hotel_id.slug reservation.room.slug %}">{{ reservation.room }}</a></td>
+                        </tr>
+                        <tr>
+                            <th scope="">Name Surname:</th>
+                            <td>{{reservation.name}} {{reservation.surname}} {{profile.user.username}}</td>
+                        </tr>
+                        <tr>
+                            <th scope="">Phone:</th>
+                            <td>{{reservation.phone}}</td>
+                        </tr>
+                        <tr>
+                            <th scope="">Check-in:</th>
+                            <td>{{reservation.checkin}}</td>
+                        </tr>
+                        <tr>
+                            <th scope="">Check-out:</th>
+                            <td>{{reservation.checkout}}</td>
+                        </tr>
+                        <tr>
+                            <th scope="">Days:</th>
+                            <td>{{reservation.days}}</td>
+                        </tr>
+                        <tr>
+                            <th scope="">Total:</th>
+                            <td>{{reservation.total}}</td>
+                        </tr>
+                        <tr>
+                            <th scope="">Status:</th>
+                            <td>{{reservation.status}}</td>
+                        </tr>
+                        <tr>
+                            <th scope="">Created at:</th>
+                            <td>{{reservation.created_at}}</td>
+                        </tr>
+                    </p>
+                </table>
+                </p>
+            </div>
+		</div>
+	</div>
+</section>
+<br>
+{% endblock  %}

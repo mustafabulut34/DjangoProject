@@ -62,7 +62,7 @@
                 <form action="/reservation/new_reservation/{{room.id}}" method="post">
                     {% csrf_token %}
                     {{reservationForm.days.label}}: {{reservationForm.days}}
-                    {{reservationForm.checkin.label}}: <input class="checkin_date" id="{{reservationForm.checkin.name}}" name="{{reservationForm.checkin.name}}" type="text">
+                    {{reservationForm.checkin.label}}: <input class="checkin_date" id="{{reservationForm.checkin.name}}" name="{{reservationForm.checkin.name}}" value="{{reservationForm.checkin.value|date:'d/m/yy'}}" type="text">
                     <input class="btn btn-primary" type="submit" value="Book!">
                 </form>
               </div>

@@ -69,7 +69,7 @@
                 </p>
             </table>
             <input type="hidden" id="days" name="days" value="{{form.days.value}}">
-            <input type="hidden" id="checkin" name="checkin" value="{{form.checkin.value | date:'y/m/d'}}">
+            <input type="hidden" id="checkin" name="checkin" value="{{form.checkin.value | date:'d/m/y'}}">
             <input class="btn btn-primary" type="submit" value="Book!">
         </form>
     </div>

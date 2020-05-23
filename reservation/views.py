@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from home.models import Setting
 from hotel.models import Category, Room
@@ -68,4 +68,4 @@ def book(request, id):
             reservation.total = reservation.room.price * reservation.days
             reservation.ip = request.META.get('REMOTE_ADDR')
             reservation.save()
-    return HttpResponse('/')
+    return HttpResponseRedirect('/user/reservations')
