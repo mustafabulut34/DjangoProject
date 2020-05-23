@@ -11,7 +11,7 @@
                     <p>
                     <h2 style="text-align:center;">User Information</h2>
                         <tr>
-                            <td colspan="2" style="text-align:center;"><img src="{{profile.image.url}}" class="img-responsive"></td>
+                            <td colspan="2" style="text-align:center;"><img src="{{profile.image.url}}" class="img-responsive" style="height:250px; border-radius: 20%;"></td>
                         </tr>
                         <tr>
                             <th scope="">Name Surname:</th>
@@ -36,6 +36,10 @@
                         <tr>
                             <th scope="">Country:</th>
                             <td>{{profile.country}}</td>
+                        </tr>
+                        <tr>
+                            <td colspan=2 align=center><a href="{% url 'user:update' %}" class="btn btn-secondary">Update Profile</a>
+                            <a href="{% url 'user:change_password' %}" class="btn btn-secondary">Change Password</a></td>
                         </tr>
                     </p>
                 </table>

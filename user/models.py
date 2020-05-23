@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.forms import ModelForm
 from django.utils.html import mark_safe
+from django.forms import TextInput, FileInput
 
 
 class UserProfile(models.Model):
@@ -27,3 +28,10 @@ class UserProfileForm(ModelForm):
     class Meta:
         model = UserProfile
         fields = ['phone', 'address', 'city', 'country', 'image']
+        widgets = {
+            'phone':   TextInput(attrs={'class': 'form-control', 'placeholder': 'Phone'}),
+            'address':   TextInput(attrs={'class': 'form-control', 'placeholder': 'Address'}),
+            'city':   TextInput(attrs={'class': 'form-control', 'placeholder': 'City'}),
+            'country':   TextInput(attrs={'class': 'form-control', 'placeholder': 'Country'}),
+            'image':   FileInput(attrs={'class': 'form-control', 'placeholder': 'Image'})
+        }

@@ -1,0 +1,27 @@
+{% extends 'homebase.html' %}
+{% load static %}
+{% block content %}
+<section class="ftco-section ftco-no-pb ftco-room">
+	<div class="container px-0">
+		<div class="row no-gutters">
+            <p>{% include 'user_panel.html' %}</p>
+            <div class="col-md-9 clearfix table-responsive">
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }}" role="alert">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                <form method="POST" enctype ="multipart/form-data">
+                    {% csrf_token %}
+                    {{user_form.as_p}}
+                    {{profile_form.as_p}}
+                    <input type="submit" class="btn btn-primary" value="UPDATE">
+                </form>
+            </div>
+		</div>
+	</div>
+</section>
+<br>
+{% endblock  %}
