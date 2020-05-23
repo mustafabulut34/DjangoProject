@@ -5,6 +5,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from hotel.models import Hotel, Category, Room, ImageRoom, CommentForm, Comment
 from .forms import SearchForm, SignUpForm
+from reservation.forms import ReservationDayForm
 import json
 
 
@@ -28,6 +29,19 @@ def category(request, slug, id):
     getCat = Category.objects.get(id=id)
     page = str(getCat.title)
     rooms = Room.objects.filter(hotel_id__category=getCat)
+    category = Category.objects.all()
+    context = {
+        'setting': setting,
+        'rooms': rooms,
+        'page': page,
+        'category': category}
+    return render(request, 'rooms.html', context)
+
+
+def all_category(request):
+    setting = Setting.objects.first()
+    page = 'All Rooms'
+    rooms = Room.objects.all()
     category = Category.objects.all()
     context = {
         'setting': setting,
@@ -71,6 +85,7 @@ def room(request, hotelslug, roomslug, id):
             messages.success(request, "Thank you!")
             return HttpResponseRedirect('')
     form = CommentForm()
+    reservationForm = ReservationDayForm()
     context = {
         'setting': setting,
         'page': page,
@@ -78,7 +93,8 @@ def room(request, hotelslug, roomslug, id):
         'room': room,
         'images': images,
         'form': form,
-        'comments': comments
+        'comments': comments,
+        'reservationForm': reservationForm
     }
     return render(request, 'room_detail.html', context)
 

@@ -1,0 +1,78 @@
+{% extends 'homebase.html' %}
+{% load static %}
+{% block content %}
+<br>
+<div class="container" style="min-height:600px;">
+    <div class="row">
+        <h2>{{room.hotel_id}} -> {{room}}</h2>
+    </div>
+    <div class="row">
+        <form action="{% url 'book' room.id %}" method="post">
+            {% csrf_token %}
+            
+            <table class="table">
+                <p>
+                    <tr>
+                        <th scope="row">{{form.name.label_tag}}</th>
+                        <td>{{form.name}}</td>
+                        <td>
+                            {% if form.name.help_text %}
+                            <small style="color:grey">{{form.name.help_text}}</small>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% for error in form.name.errors %}
+                                <p style="color:red">{{ error }}</p>
+                            {% endfor %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">{{form.surname.label_tag}}</th>
+                        <td>{{form.surname}}</td>
+                        <td>
+                            {% if form.surname.help_text %}
+                            <small style="color:grey">{{form.surname.help_text}}</small>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% for error in form.surname.errors %}
+                                <p style="color:red">{{ error }}</p>
+                            {% endfor %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">{{form.phone.label_tag}}</th>
+                        <td>{{form.phone}}</td>
+                        <td>
+                            {% if form.phone.help_text %}
+                            <small style="color:grey">{{form.phone.help_text}}</small>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% for error in form.phone.errors %}
+                                <p style="color:red">{{ error }}</p>
+                            {% endfor %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">{{form.checkin.label_tag}}</th>
+                        <td>{{form.checkin.value}}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">{{form.days.label_tag}}</th>
+                        <td>{{form.days.value}}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Total: </th>
+                        <td>${{total}}</td>
+                    </tr>
+                </p>
+            </table>
+            <input type="hidden" id="days" name="days" value="{{form.days.value}}">
+            <input type="hidden" id="checkin" name="checkin" value="{{form.checkin.value | date:'y/m/d'}}">
+            <input class="btn btn-primary" type="submit" value="Book!">
+        </form>
+    </div>
+</div>
+
+{% endblock  %}

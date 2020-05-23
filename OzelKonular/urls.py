@@ -25,6 +25,7 @@ urlpatterns = [
     #path('user/', include('user.urls')),
     path('user/', include(('user.urls', 'user'), namespace='user')),
     path('ckeditor/', include('ckeditor_uploader.urls')),
+    path('reservation/', include('reservation.urls')),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL,
