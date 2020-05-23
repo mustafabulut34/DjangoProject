@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 
-from hotel.models import Category
+from hotel.models import Category, Comment
 from home.models import Setting
 from reservation.models import Reservation
 from .models import UserProfile, UserProfileForm
@@ -109,4 +109,20 @@ def reservation_detail(request, id):
 
 @login_required(login_url='/')
 def comments(request):
-    return HttpResponseRedirect("deneme")
+    setting = Setting.objects.first()
+    category = Category.objects.all()
+    comments = Comment.objects.filter(user_id=request.user.id)
+    context = {
+        'setting': setting,
+        'category': category,
+        'comments': comments,
+        'page': 'My Comments'
+    }
+    return render(request, 'user_comments.html', context)
+
+
+@login_required(login_url='/')
+def delete_comment(request, id):
+    Comment.objects.get(user_id=request.user.id, id=id).delete()
+    messages.success(request, 'Message deleted!')
+    return HttpResponseRedirect('/user/comments')

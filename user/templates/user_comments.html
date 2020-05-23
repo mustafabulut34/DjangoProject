@@ -2,39 +2,44 @@
 {% load static %}
 {% block content %}
 <section class="ftco-section ftco-no-pb ftco-room">
-	<div class="container px-0">
+	<div class="container px-0" style="min-height:600px">
 		<div class="row no-gutters">
             <p>{% include 'user_panel.html' %}</p>
             <div class="col-md-10 clearfix table-responsive">
                 <p>
-                <p style="color:black"><h3>Founded {{reservations.count}} reservation{{reservations.count | pluralize}}:</h3></p>
+                <p style="color:black"><h3>Founded {{comments.count}} comment{{comments.count | pluralize}}:</h3></p>
                 <table class="table">
                     <thead class="thead-dark">
                       <tr>
                         <th scope="col">Hotel</th>
                         <th scope="col">Room</th>
-                        <th scope="col">First Name</th>
-                        <th scope="col">Last Name</th>
-                        <th scope="col">Total</th>
-                        <th scope="col">Check-in</th>
-                        <th scope="col">Days</th>
+                        <th scope="col">Subject</th>
+                        <th scope="col">Comment</th>
+                        <th scope="col">Date</th>
                         <th scope="col">Status</th>
+                        <th scope="col">Rate</th>
                         <th scope="col"></th>
                       </tr>
                     </thead>
                     <tbody>
-                    {% if reservations%}
-                    {% for reservation in reservations %}
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }}" role="alert">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                    {% if comments%}
+                    {% for comment in comments %}
                       <tr>
-                        <td style="vertical-align: middle;"><a href="{% url 'hotel' reservation.room.hotel_id.id reservation.room.hotel_id.slug %}">{{reservation.room.hotel_id}}</a></td>
-                        <td style="vertical-align: middle;"><a href="{% url 'room' reservation.room.id reservation.room.hotel_id.slug reservation.room.slug %}">{{ reservation.room }}</a></td>
-                        <td style="vertical-align: middle;">{{ reservation.name }}</td>
-                        <td style="vertical-align: middle;">{{ reservation.surname }}</td>
-                        <td style="vertical-align: middle;">{{ reservation.total }}</td>
-                        <td style="vertical-align: middle;">{{ reservation.checkin }}</td>
-                        <td style="vertical-align: middle;">{{ reservation.days }}</td>
-                        <td style="vertical-align: middle;">{{ reservation.status }}</td>
-                        <td style="vertical-align: middle;"><a href="{% url 'user:reservation_detail' reservation.id %}" class="btn btn-primary">Detail</a></td>
+                        <td style="vertical-align: middle;"><a href="{% url 'hotel' comment.room.hotel_id.id comment.room.hotel_id.slug %}">{{comment.room.hotel_id}}</a></td>
+                        <td style="vertical-align: middle;"><a href="{% url 'room' comment.room.id comment.room.hotel_id.slug comment.room.slug %}">{{ comment.room }}</a></td>
+                        <td style="vertical-align: middle;">{{ comment.subject | slice:"5" }}{% if comment.subject|length > 5 %}...{% endif %}</td>
+                        <td style="vertical-align: middle;">{{ comment.comment | slice:"15"}}{% if comment.comment|length > 15 %}...{% endif %}</td>
+                        <td style="vertical-align: middle;">{{ comment.created_at }}</td>
+                        <td style="vertical-align: middle;">{{ comment.status }}</td>
+                        <td style="vertical-align: middle;">{{ comment.rate }}</td>
+                        <td style="vertical-align: middle;"><a href="{% url 'user:delete_comment' comment.id %}" onclick="return confirm('Message will be deleted! Are you sure?')" class="btn btn-danger">Delete</a></td>
                       </tr>
                     {% endfor %}
                     {% else %}
