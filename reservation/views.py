@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from home.models import Setting
@@ -7,6 +7,7 @@ from .models import Reservation, ReservationForm
 from user.models import UserProfile
 from datetime import date, timedelta
 from .forms import ReservationDayForm
+from django.contrib import messages
 # Create your views here.
 
 
@@ -28,8 +29,8 @@ def new_reservation(request, id):
     setting = Setting.objects.first()
     page = 'New Reservation'
     category = Category.objects.all()
-    profile = UserProfile.objects.get(user=request.user)
-    room = Room.objects.get(id=id)
+    profile = get_object_or_404(UserProfile, user=request.user)
+    room = get_object_or_404(Room, id=id)
     total = room.price * days
 
     form = ReservationForm()
@@ -51,13 +52,14 @@ def new_reservation(request, id):
     return render(request, 'new_reservation.html', context)
 
 
+@login_required(login_url='/login')
 def book(request, id):
     if request.method == "POST":
         form = ReservationForm(request.POST)
         if form.is_valid():
             reservation = Reservation()
             reservation.user = request.user
-            reservation.room = Room.objects.get(id=id)
+            reservation.room = get_object_or_404(Room, id=id)
             reservation.name = form.cleaned_data['name']
             reservation.surname = form.cleaned_data['surname']
             reservation.phone = form.cleaned_data['phone']
@@ -68,4 +70,5 @@ def book(request, id):
             reservation.total = reservation.room.price * reservation.days
             reservation.ip = request.META.get('REMOTE_ADDR')
             reservation.save()
+            messages.success(request, "Reservation created!")
     return HttpResponseRedirect('/user/reservations')

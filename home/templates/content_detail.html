@@ -1,0 +1,23 @@
+{% extends 'homebase.html' %}
+{% load static %}
+
+{% block title %}{{page.title}} - {{ setting.company }}{% endblock %}
+{% block keywords %}{{ setting.keywords }} {% endblock %}
+{% block description %} {{setting.description}} {% endblock %}
+{% block head %}<link rel='shortcut icon' type='image/x-icon' href='{{setting.image.url}}'/>{% endblock  %}
+
+{% block content %}
+<br><br>
+    <div class="container">
+        <div class="row">
+            <img src="{{ content.image.url }}" height="300" align="left" style="padding: 10px; border-radius:25px; ">
+            {{content.detail|safe}}
+        </div>
+        <hr>
+        <div class="row text-center">
+            {% for image in images %}
+                <img src="{{image.image.url}}" height="200" alt="">
+            {% endfor %}
+        </div>
+    </div>
+{% endblock  %}

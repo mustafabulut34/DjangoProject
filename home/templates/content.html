@@ -152,6 +152,36 @@
     </div>
   </div>
 </section>
+
+{% if campaigns %}
+<section class="ftco-section">
+      <div class="container">
+        <div class="row justify-content-center mb-5 pb-3">
+          <div class="col-md-7 heading-section text-center ftco-animate">
+          	<span class="subheading">Campaigns</span>
+            <h2>Recent Campaigns</h2>
+          </div>
+        </div>
+        <div class="row d-flex justify-content-center">
+			{% for campaign in campaigns %}
+				<div class="col-md-4 d-flex ftco-animate">
+            		<div class="blog-entry align-self-stretch">
+            		  <a href="{% url 'contentdetail' campaign.id campaign.slug %}" class="block-20 rounded" style="width:300px; background-size: 300px 300px;background-image: url('{{campaign.image.url}}');">
+            		  </a>
+            		  <div class="text mt-3 text-center">
+            		  	<div class="meta mb-2">
+            		      <div>{{campaign.created_at|date}}</div>
+            		    </div>
+            		    <h3 class="heading"><a href="{% url 'contentdetail' campaign.id campaign.slug %}">{{campaign.title}}</a></h3>
+						
+            		  </div>
+            		</div>
+          		</div>
+			{% endfor %}
+        </div>
+      </div>
+</section>
+{% endif %}
 <section class="ftco-section ftco-no-pb ftco-room">
 	<div class="container-fluid px-0">
 		<div class="row no-gutters justify-content-center mb-5 pb-3">

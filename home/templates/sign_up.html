@@ -3,7 +3,7 @@
 {% block content %}
 <br>
 <div class="container" style="min-height:600px;">
-    <div class="row">
+    <div class="row d-flex justify-content-center">
         <form action="{% url 'sign_up' %}" method="post">
             {% csrf_token %}
             
@@ -27,7 +27,9 @@
                 </p>
             {% endfor %}
             </table>
-            <input class="btn btn-primary" type="submit" value="Submit">
+            <div class="text-center">
+                <input class="btn btn-primary" type="submit" value="Submit">
+            </div>
         </form>
     </div>
 </div>

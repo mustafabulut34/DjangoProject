@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 
 from hotel.models import Category, Comment
@@ -14,11 +14,12 @@ from django.contrib.auth import update_session_auth_hash
 from .forms import UserUpdateForm
 
 
-@login_required(login_url='/')
+@login_required(login_url='/login')
 def index(request):
     setting = Setting.objects.first()
     category = Category.objects.all()
     profile = UserProfile.objects.get(id=request.user.id)
+    profile = get_object_or_404(UserProfile, id=request.user.id)
     context = {
         'setting': setting,
         'category': category,
@@ -28,7 +29,7 @@ def index(request):
     return render(request, 'user_profile.html', context)
 
 
-@login_required(login_url='/')
+@login_required(login_url='/login')
 def update(request):
     if request.method == 'POST':
         user_form = UserUpdateForm(request.POST, instance=request.user)
@@ -59,7 +60,7 @@ def update(request):
         return render(request, 'user_update.html', context)
 
 
-@login_required(login_url='/')
+@login_required(login_url='/login')
 def change_password(request):
     if request.method == "POST":
         form = PasswordChangeForm(request.user, request.POST)
@@ -79,7 +80,7 @@ def change_password(request):
         return render(request, 'change_password.html', {'form': form, 'category': category, 'page': 'Change Password'})
 
 
-@login_required(login_url='/')
+@login_required(login_url='/login')
 def reservations(request):
     setting = Setting.objects.first()
     category = Category.objects.all()
@@ -93,11 +94,12 @@ def reservations(request):
     return render(request, 'user_reservations.html', context)
 
 
-@login_required(login_url='/')
+@login_required(login_url='/login')
 def reservation_detail(request, id):
     setting = Setting.objects.first()
     category = Category.objects.all()
-    reservation = Reservation.objects.get(id=id, user_id=request.user.id)
+    reservation = get_object_or_404(
+        Reservation, id=id, user_id=request.user.id)
     context = {
         'setting': setting,
         'category': category,
@@ -107,7 +109,7 @@ def reservation_detail(request, id):
     return render(request, 'user_reservation_detail.html', context)
 
 
-@login_required(login_url='/')
+@login_required(login_url='/login')
 def comments(request):
     setting = Setting.objects.first()
     category = Category.objects.all()
@@ -121,7 +123,7 @@ def comments(request):
     return render(request, 'user_comments.html', context)
 
 
-@login_required(login_url='/')
+@login_required(login_url='/login')
 def delete_comment(request, id):
     Comment.objects.get(user_id=request.user.id, id=id).delete()
     messages.success(request, 'Message deleted!')

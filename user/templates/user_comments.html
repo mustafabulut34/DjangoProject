@@ -16,8 +16,8 @@
                         <th scope="col">Subject</th>
                         <th scope="col">Comment</th>
                         <th scope="col">Date</th>
-                        <th scope="col">Status</th>
                         <th scope="col">Rate</th>
+                        <th scope="col">Status</th>
                         <th scope="col"></th>
                       </tr>
                     </thead>
@@ -37,8 +37,8 @@
                         <td style="vertical-align: middle;">{{ comment.subject | slice:"5" }}{% if comment.subject|length > 5 %}...{% endif %}</td>
                         <td style="vertical-align: middle;">{{ comment.comment | slice:"15"}}{% if comment.comment|length > 15 %}...{% endif %}</td>
                         <td style="vertical-align: middle;">{{ comment.created_at }}</td>
-                        <td style="vertical-align: middle;">{{ comment.status }}</td>
                         <td style="vertical-align: middle;">{{ comment.rate }}</td>
+                        <td style="vertical-align: middle;">{{ comment.status }}</td>
                         <td style="vertical-align: middle;"><a href="{% url 'user:delete_comment' comment.id %}" onclick="return confirm('Message will be deleted! Are you sure?')" class="btn btn-danger">Delete</a></td>
                       </tr>
                     {% endfor %}

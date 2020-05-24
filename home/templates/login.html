@@ -1,0 +1,38 @@
+{% extends 'homebase.html' %}
+{% load static %}
+{% block content %}
+<br>
+<div class="container" style="min-height:600px;">
+    <div class="row text-center d-flex justify-content-center">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}" role="alert">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+    <div class="row text-center d-flex justify-content-center">
+        
+        <form action="{% url 'login' %}" method="post">
+            {% csrf_token %}
+            
+            <table class="table">
+                <p>
+                    <tr>
+                        <th scope="row">Username</th>
+                        <td><input class="form-control login" type="text" name="username" placeholder="Username"></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Password</th>
+                        <td><input class="form-control login" type="password" name="password" placeholder="Password"></td>
+                    </tr>
+                </p>
+
+            </table>
+            <input class="btn btn-primary" type="submit" name="submit" value="Login">
+            <p><a href="{% url 'sign_up' %}">Sign Up</a></p>
+        </form>
+    </div>
+</div>
+{% endblock  %}

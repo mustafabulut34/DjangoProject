@@ -25,7 +25,7 @@ SECRET_KEY = '9q7sm822$cpmxje3bqelpb$v-a#$7rl7m@e=f2_djnnj9fj!ps'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1']
 
 
 # Application definition
@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     'home.apps.HomeConfig',
     'mptt',
     'user.apps.UserConfig',
-    'reservation.apps.ReservationConfig'
+    'reservation.apps.ReservationConfig',
+    'content.apps.ContentConfig'
 ]
 
 MIDDLEWARE = [

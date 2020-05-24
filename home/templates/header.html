@@ -8,9 +8,9 @@
     <div class="collapse navbar-collapse" id="ftco-nav">
       <ul class="navbar-nav ml-auto">
         <li class="nav-item"><a href="/" class="nav-link">Home</a></li>
-        <li class="nav-item">
-          <div class="dropdown show nav-link">
-            <a class="dropdown-toggle" href="{% url 'all-category'%}" id="dropdownMenuLink" aria-haspopup="true" aria-expanded="false">
+
+        <li class="nav-item dropdown">
+            <a class="dropdown-toggle nav-link" href="{% url 'all-category'%}" id="dropdownMenuLink" aria-haspopup="true" aria-expanded="false">
               Hotels
             </a>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
@@ -19,8 +19,23 @@
                 <a class="dropdown-item" href="{% url 'category' node.id node.slug %}">{{ node.title }}</a>
               {% endrecursetree %}
             </div>
-          </div>
         </li>
+
+        {% if menu %}
+        {% recursetree menu %}
+            <li {% if not node.is_leaf_node %} class="nav-item dropdown"{% endif %}>
+                <a class="{% if not node.is_leaf_node %}dropdown-toggle nav-link{% else %}dropdown-item{% endif %} " href="{% url 'menu' node.id %}" {% if not node.is_leaf_node %} data-toggle="dropdown" {% endif %} id="dropdownMenuLink" aria-haspopup="true" aria-expanded="false">
+                  {{node.title}}
+                </a>
+                {% if not node.is_leaf_node %}
+                <ul class="dropdown-menu" role="menu" class="children">
+                    {{ children }}
+                </ul>
+                {% endif %}
+            </li>
+        {% endrecursetree %}
+        {% endif %}
+
         <li class="nav-item"><a href="/references" class="nav-link">References</a></li>
         <li class="nav-item"><a href="/aboutus" class="nav-link">About Us</a></li>
         <li class="nav-item"><a href="/contact" class="nav-link">Contact</a></li>

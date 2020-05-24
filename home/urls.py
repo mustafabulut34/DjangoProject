@@ -14,6 +14,9 @@ urlpatterns = [
     path('search_box/', views.search_box, name="search_box"),
     path('login/', views.login, name="login"),
     path('logout/', views.logout, name="logout"),
-    path('signup/', views.sign_up, name="sign_up")
+    path('signup/', views.sign_up, name="sign_up"),
+    path('content/<int:id>/<slug:slug>/',
+         views.contentdetail, name="contentdetail"),
+    path('menu/<int:id>', views.menu, name="menu"),
 
 ]

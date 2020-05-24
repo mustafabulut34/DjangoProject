@@ -3,10 +3,10 @@
 {% block content %}
 <br>
 <div class="container" style="min-height:600px;">
-    <div class="row">
+    <div class="row justify-content-center">
         <h2>{{room.hotel_id}} -> {{room}}</h2>
     </div>
-    <div class="row">
+    <div class="row justify-content-center">
         <form action="{% url 'book' room.id %}" method="post">
             {% csrf_token %}
             
@@ -70,7 +70,7 @@
             </table>
             <input type="hidden" id="days" name="days" value="{{form.days.value}}">
             <input type="hidden" id="checkin" name="checkin" value="{{form.checkin.value | date:'d/m/y'}}">
-            <input class="btn btn-primary" type="submit" value="Book!">
+            <div class="text-center"><input class="btn btn-primary" type="submit" value="Book!"></div>
         </form>
     </div>
 </div>
