@@ -1,0 +1,100 @@
+{% extends 'homebase.html' %}
+{% load static %}
+{% block content %}
+<section class="ftco-section ftco-no-pb ftco-room">
+	<div class="container px-0">
+		<div class="row no-gutters">
+            <p>{% include 'user_panel.html' %}</p>
+            <div class="col-md-10 clearfix table-responsive">
+                <p>
+                {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }}" role="alert">
+                                {{ message | safe}}
+                            </div>
+                        {% endfor %}
+                {% endif %}
+                <a href="{% url 'user:addcontent'%}" class="btn btn-primary float-right">Add Content</a>
+                <p style="color:black"><h3>Founded {{contents.count}} content{{contents.count | pluralize}}:</h3></p>
+                <table class="table">
+                    <thead class="thead-dark">
+                      <tr>
+                        <th scope="col">Image</th>
+                        <th scope="col">Title</th>
+                        <th scope="col">Type</th>
+                        <th scope="col">Menu</th>
+                        <th scope="col">Galery</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Status</th>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                    {% if contents%}
+                        {% for content in contents %}
+                          <tr>
+                            <th scope="row"> <img src="{{ content.image.url }}" alt="{{ content.description }}" height=50"> </th>
+                            <td style="vertical-align: middle;"><a href="{% url 'contentdetail' content.id content.slug %}">{{content.title}}</a></td>
+                            <td style="vertical-align: middle;">{{ content.kind }}</td>
+                            <td style="vertical-align: middle;">{% if content.menu %}{{ content.menu }}{% else %}-{% endif %}</td>
+                            <td style="vertical-align: middle;">
+                              <a href="javascript:;" onclick="window.open('{% url 'user:contentaddimage' content.id %}', 'GALERY', 'width=800 ,height= 800,status,resizable=no,left=100,top=50, screenX= parseInt((screen.availWidth/2) - (500/2)) ,screenY= parseInt((screen.availHeight/2) - (500/2)))')">
+                                <img src="{% static 'images/galery.png'%}" height=30>
+                              </a>
+                            </td>
+                            <td style="vertical-align: middle;">{{ content.created_at | date }}</td>
+                            <td style="vertical-align: middle;">{{ content.status }}</td>
+                            <td style="vertical-align: middle;"><a href="{% url 'user:contentedit' content.id %}" class="btn btn-warning">EDIT</a></td>
+                            <td style="vertical-align: middle;"><a href="{% url 'user:contentdelete' content.id %}" class="btn btn-danger" onclick="return confirm('Are you sure?');">DELETE</a></td>
+                          </tr>
+                        {% endfor %}
+                    {% else %}
+                      <tr>
+                        <th scope="row"> - </th>
+                        <td style="vertical-align: middle;">-</td>
+                        <td style="vertical-align: middle;">-</td>
+                        <td style="vertical-align: middle;">-</td>
+                        <td style="vertical-align: middle;">-</td>
+                        <td style="vertical-align: middle;">-</td>
+                        <td style="vertical-align: middle;">-</td>
+                        <td style="vertical-align: middle;">-</td>
+                      </tr>
+                    {% endif %}
+                    </tbody>
+                </table>
+                </p>
+            </div>
+		</div>
+	</div>
+</section>
+<br>
+{% endblock  %}
+{% block footer %}
+<script>
+
+
+    var Pencerem;
+
+    w= ;
+    h= 500;
+
+    function Galery(url) {
+
+
+        var left = ;
+
+
+        var top = ;
+
+
+        var windowFeatures = ;
+
+
+        Pencerem = 
+
+    }
+
+
+</script>
+{% endblock  %}

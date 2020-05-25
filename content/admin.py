@@ -21,12 +21,14 @@ class ContentAdmin(admin.ModelAdmin):
     list_filter = ['status', 'kind']
     inlines = [ContentImageInline]
     prepopulated_fields = {'slug': ('title',)}
+    list_editable = ['status']
 
 
 class MenuAdmin(DraggableMPTTAdmin):
     mptt_indent_field = "title"
     list_display = ('tree_actions', 'indented_title', 'status')
     inlines = [MenuContentInline]
+    list_editable = ['status']
 
 
 admin.site.register(Menu, MenuAdmin)

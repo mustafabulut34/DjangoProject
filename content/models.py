@@ -1,16 +1,23 @@
 from django.db import models
 from ckeditor_uploader.fields import RichTextUploadingField
+from ckeditor.widgets import CKEditorWidget
 # Create your models here.
-
+from django.contrib.auth.models import User
 from django.urls import reverse
 from django.utils.safestring import mark_safe
 from mptt.fields import TreeForeignKey
 from mptt.models import MPTTModel
+from django.forms import ModelForm, TextInput, Select, FileInput
 
 
 STATUS = (
     ('True', 'True'),
     ('False', 'False'),
+)
+
+TYPE = (
+    ('Menu', 'Menu'),
+    ('Campaign', 'Campaign'),
 )
 
 
@@ -38,13 +45,7 @@ class Menu(MPTTModel):
 
 
 class Content(models.Model):
-    TYPE = (
-        ('Menu', 'Menu'),
-        ('News', 'News'),
-        ('Campaign', 'Campaign'),
-        ('Announcement', 'Announcement'),
-    )
-
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     menu = models.OneToOneField(
         Menu, null=True, blank=True, on_delete=models.CASCADE)
     kind = models.CharField(max_length=15, choices=TYPE)
@@ -71,11 +72,36 @@ class Content(models.Model):
         return reverse("content_detail", kwargs={"slug": self.slug})
 
 
+class ContentForm(ModelForm):
+    class Meta:
+        model = Content
+        fields = ['kind', 'title', 'keywords',
+                  'description', 'image', 'detail', 'slug']
+        widgets = {
+            'title': TextInput(attrs={'class': 'form-control', 'placeholder': 'Title'}),
+            'slug': TextInput(attrs={'class': 'form-control', 'placeholder': 'Slug'}),
+            'keywords': TextInput(attrs={'class': 'form-control', 'placeholder': 'Keywords'}),
+            'description': TextInput(attrs={'class': 'form-control', 'placeholder': 'Description'}),
+            'kind': Select(attrs={'class': 'form-control', 'placeholder': 'Kind'}, choices=TYPE),
+            'image': FileInput(attrs={'class': 'form-control', 'placeholder': 'Image'}),
+            'detail': CKEditorWidget(),
+        }
+
+
 class CImages(models.Model):
     content = models.ForeignKey(Content, on_delete=models.CASCADE)
     title = models.CharField(max_length=50, blank=True)
     image = models.ImageField(blank=True, upload_to='images/content/')
 
+    def __str__(self):
+        return self.title
+
     def image_tag(self):
         return mark_safe('<img src="{}"height="50"/>'.format(self.image.url))
     image_tag.short_description = 'Image'
+
+
+class CImagesForm(ModelForm):
+    class Meta:
+        model = CImages
+        fields = ['title', 'image']

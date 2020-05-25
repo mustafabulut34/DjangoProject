@@ -16,7 +16,6 @@ def index(request):
     category = Category.objects.all()
     menu = Menu.objects.all()
     campaigns = Content.objects.filter(kind='Campaign').order_by('-id')[:3]
-    print(campaigns)
     slides = Hotel.objects.all()[:5]
     rooms = Room.objects.all().order_by('?')[:6]
     context = {

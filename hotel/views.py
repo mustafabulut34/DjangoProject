@@ -16,8 +16,6 @@ def addcomment(request, id):
         form = CommentForm(request.POST)
         if form.is_valid():
             current_user = get_user(request)
-            print("------------------------------------------------")
-            print(current_user)
             data = Comment()
             data.user_id = current_user.id
             data.room_id = id
