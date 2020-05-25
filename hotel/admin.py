@@ -69,7 +69,7 @@ class HotelAdmin(admin.ModelAdmin):
 
 class RoomAdmin(admin.ModelAdmin):
     list_display = ['title', 'hotel_id', 'price', 'image_tag', 'status']
-    list_filter = ['price', 'status']
+    list_filter = ['hotel_id', 'status']
     list_editable = ['status']
     list_display_links = ['title']
     inlines = [ImageRoomInline]

@@ -18,10 +18,9 @@ from .forms import UserUpdateForm
 @login_required(login_url='/login')
 def index(request):
     setting = Setting.objects.first()
-    category = Category.objects.all()
-    menu = Menu.objects.all()
-    profile = UserProfile.objects.get(id=request.user.id)
-    profile = get_object_or_404(UserProfile, id=request.user.id)
+    category = Category.objects.filter(status=True)
+    menu = Menu.objects.filter(status=True)
+    profile = get_object_or_404(UserProfile, user_id=request.user.id)
     context = {
         'setting': setting,
         'category': category,
@@ -49,8 +48,8 @@ def update(request):
             return redirect('/user/update')
     else:
         setting = Setting.objects.first()
-        menu = Menu.objects.all()
-        category = Category.objects.all()
+        menu = Menu.objects.filter(status=True)
+        category = Category.objects.filter(status=True)
         user_form = UserUpdateForm(instance=request.user)
         profile_form = UserProfileForm(instance=request.user.userprofile)
         context = {
@@ -79,8 +78,8 @@ def change_password(request):
                 request, 'Please correct the error below!<br>'+str(form.errors))
             return HttpResponseRedirect('/user/password')
     else:
-        category = Category.objects.all()
-        menu = Menu.objects.all()
+        category = Category.objects.filter(status=True)
+        menu = Menu.objects.filter(status=True)
         form = PasswordChangeForm(request.user)
         return render(request, 'change_password.html', {'form': form, 'category': category, 'menu': menu, 'page': 'Change Password'})
 
@@ -88,8 +87,8 @@ def change_password(request):
 @login_required(login_url='/login')
 def reservations(request):
     setting = Setting.objects.first()
-    category = Category.objects.all()
-    menu = Menu.objects.all()
+    category = Category.objects.filter(status=True)
+    menu = Menu.objects.filter(status=True)
     reservations = Reservation.objects.filter(user_id=request.user.id)
     context = {
         'setting': setting,
@@ -104,8 +103,8 @@ def reservations(request):
 @login_required(login_url='/login')
 def reservation_detail(request, id):
     setting = Setting.objects.first()
-    category = Category.objects.all()
-    menu = Menu.objects.all()
+    category = Category.objects.filter(status=True)
+    menu = Menu.objects.filter(status=True)
     reservation = get_object_or_404(
         Reservation, id=id, user_id=request.user.id)
     context = {
@@ -121,8 +120,8 @@ def reservation_detail(request, id):
 @login_required(login_url='/login')
 def comments(request):
     setting = Setting.objects.first()
-    category = Category.objects.all()
-    menu = Menu.objects.all()
+    category = Category.objects.filter(status=True)
+    menu = Menu.objects.filter(status=True)
     comments = Comment.objects.filter(user_id=request.user.id)
     context = {
         'setting': setting,
@@ -144,8 +143,8 @@ def delete_comment(request, id):
 @login_required(login_url='/login')
 def contents(request):
     setting = Setting.objects.first()
-    category = Category.objects.all()
-    menu = Menu.objects.all()
+    category = Category.objects.filter(status=True)
+    menu = Menu.objects.filter(status=True)
     contents = Content.objects.filter(user_id=request.user.id)
     context = {
         'setting': setting,
@@ -180,8 +179,8 @@ def addcontent(request):
             return HttpResponseRedirect('/user/addcontent')
     else:
         setting = Setting.objects.first()
-        category = Category.objects.all()
-        menu = Menu.objects.all()
+        category = Category.objects.filter(status=True)
+        menu = Menu.objects.filter(status=True)
         form = ContentForm()
         context = {
             'setting': setting,
@@ -207,8 +206,8 @@ def contentedit(request, id):
             return HttpResponseRedirect('/user/contentedit/id')
     else:
         setting = Setting.objects.first()
-        category = Category.objects.all()
-        menu = Menu.objects.all()
+        category = Category.objects.filter(status=True)
+        menu = Menu.objects.filter(status=True)
         contents = Content.objects.filter(user_id=request.user.id)
         form = ContentForm(instance=content)
         context = {

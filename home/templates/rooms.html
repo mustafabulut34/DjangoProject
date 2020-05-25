@@ -3,8 +3,8 @@
 {% load static %}
 
 {% block title %}{{ page }}{% endblock %}
-{% block keywords %}{{ rooms.first.hotel_id.category.keywords }} {% endblock %}
-{% block description %} {{ rooms.first.hotel_id.category.description }} {% endblock %}
+{% block keywords %}{% if pageControl == 'HOTEL' %}{{rooms.first.hotel_id.keywords}}{% else %}{{ rooms.first.hotel_id.category.keywords }}{% endif %}{% endblock %}
+{% block description %} {% if pageControl == 'HOTEL' %}{{rooms.first.hotel_id.keywords | safe}}{% else %}{{ rooms.first.hotel_id.category.description }}{% endif %} {% endblock %}
 {% block head %}<link rel='shortcut icon' type='image/x-icon' href='{{setting.image.url}}'/>{% endblock  %}
 
 {% block content %}

@@ -4,8 +4,8 @@ from django.forms import ModelForm, TextInput, EmailInput, Textarea
 
 
 STATUS = (
-    ('True', 'Evet'),
-    ('False', 'Hayır'),
+    ('True', 'True'),
+    ('False', 'False'),
 )
 
 

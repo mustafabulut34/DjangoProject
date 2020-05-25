@@ -7,17 +7,20 @@ from hotel.models import Hotel, Category, Room, ImageRoom, CommentForm, Comment
 from content.models import Menu, Content, CImages
 from .forms import SearchForm, SignUpForm
 from reservation.forms import ReservationDayForm
+from user.models import UserProfile
 import json
 
 
 def index(request):
     setting = Setting.objects.first()
     page = 'index'
-    category = Category.objects.all()
-    menu = Menu.objects.all()
-    campaigns = Content.objects.filter(kind='Campaign').order_by('-id')[:3]
-    slides = Hotel.objects.all()[:5]
-    rooms = Room.objects.all().order_by('?')[:6]
+    category = Category.objects.filter(status=True)
+    menu = Menu.objects.filter(status=True)
+    campaigns = Content.objects.filter(
+        kind='Campaign', status=True).order_by('-id')[:3]
+    slides = Hotel.objects.filter(status=True)[:5]
+    rooms = Room.objects.filter(
+        status=True, hotel_id__status=True).order_by('?')[:6]
     context = {
         'campaigns': campaigns,
         'setting': setting,
@@ -31,11 +34,12 @@ def index(request):
 
 def category(request, slug, id):
     setting = Setting.objects.first()
-    getCat = get_object_or_404(Category, id=id)
+    getCat = get_object_or_404(Category, id=id, status=True)
     page = str(getCat.title)
-    rooms = Room.objects.filter(hotel_id__category=getCat)
-    category = Category.objects.all()
-    menu = Menu.objects.all()
+    rooms = Room.objects.filter(
+        hotel_id__category=getCat, status=True, hotel_id__status=True)
+    category = Category.objects.filter(status=True)
+    menu = Menu.objects.filter(status=True)
     context = {
         'setting': setting,
         'menu': menu,
@@ -48,9 +52,9 @@ def category(request, slug, id):
 def all_category(request):
     setting = Setting.objects.first()
     page = 'All Rooms'
-    rooms = Room.objects.all()
-    category = Category.objects.all()
-    menu = Menu.objects.all()
+    rooms = Room.objects.filter(status=True, hotel_id__status=True)
+    category = Category.objects.filter(status=True)
+    menu = Menu.objects.filter(status=True)
     context = {
         'setting': setting,
         'menu': menu,
@@ -62,27 +66,29 @@ def all_category(request):
 
 def hotel(request, slug, id):
     setting = Setting.objects.first()
-    category = Category.objects.all()
-    rooms = Room.objects.filter(hotel_id=id)
+    category = Category.objects.filter(status=True)
+    rooms = Room.objects.filter(
+        hotel_id=id, status=True, hotel_id__status=True)
     page = rooms.first().hotel_id.title
-    menu = Menu.objects.all()
+    menu = Menu.objects.filter(status=True)
     context = {
         'setting': setting,
         'menu': menu,
         'page': page,
         'category': category,
-        'rooms': rooms
+        'rooms': rooms,
+        'pageControl': 'HOTEL',
     }
     return render(request, 'rooms.html', context)
 
 
 def room(request, hotelslug, roomslug, id):
     setting = Setting.objects.first()
-    menu = Menu.objects.all()
-    room = get_object_or_404(Room, id=id)
+    menu = Menu.objects.filter(status=True)
+    room = get_object_or_404(Room, id=id, status=True, hotel_id__status=True)
     images = ImageRoom.objects.filter(room_id=id)
     page = 'room'
-    category = Category.objects.all()
+    category = Category.objects.filter(status=True)
     comments = Comment.objects.filter(
         room_id=id, status=True).order_by('-created_at')
     if request.method == 'POST':
@@ -116,16 +122,16 @@ def search(request):
     if request.method == 'POST':
         form = SearchForm(request.POST)
         if form.is_valid():
-            category = Category.objects.all()
-            menu = Menu.objects.all()
+            category = Category.objects.filter(status=True)
+            menu = Menu.objects.filter(status=True)
             query = form.cleaned_data['query']
             catid = form.cleaned_data['catid']
             if catid != 0:
                 rooms = Room.objects.filter(
-                    title__icontains=query, hotel_id__category=catid)
+                    title__icontains=query, hotel_id__category=catid, hotel_id__status=True, status=True)
             else:
                 rooms = Room.objects.filter(
-                    title__icontains=query)
+                    title__icontains=query, status=True, hotel_id__status=True)
             context = {
                 'category': category,
                 'menu': menu,
@@ -140,7 +146,8 @@ def search(request):
 def search_box(request):
     if request.is_ajax():
         q = request.GET.get('term', '')
-        rooms = Room.objects.filter(title__icontains=q)
+        rooms = Room.objects.filter(
+            title__icontains=q, status=True, hotel_id__status=True)
         results = []
         for room in rooms:
             room_json = {}
@@ -169,8 +176,8 @@ def login(request):
             url = '/login'
         return HttpResponseRedirect(url)
     setting = Setting.objects.first()
-    category = Category.objects.all()
-    menu = Menu.objects.all()
+    category = Category.objects.filter(status=True)
+    menu = Menu.objects.filter(status=True)
     context = {
         'setting': setting,
         'menu': menu,
@@ -190,17 +197,26 @@ def logout(request):
 def sign_up(request):
     if request.method == "POST":
         form = SignUpForm(request.POST)
+        print("FORM OKEY!")
         if form.is_valid():
             form.save()
             user = authenticate(
                 username=form.cleaned_data['username'], password=form.cleaned_data['password1'])
             auth_login(request, user)
+            data = UserProfile()
+            data.user_id = request.user.id
+            data.image = "images/users/user.png"
+            data.save()
+            messages.success(request, "Sign up successfully!")
             return HttpResponseRedirect("/")
-
+        else:
+            messages.warning(request, "Check Form! " + str(form.errors))
+            return HttpResponseRedirect("/signup")
+    print("POST DEĞİL")
     form = SignUpForm()
     setting = Setting.objects.first()
-    category = Category.objects.all()
-    menu = Menu.objects.all()
+    category = Category.objects.filter(status=True)
+    menu = Menu.objects.filter(status=True)
     context = {
         'setting': setting,
         'menu': menu,
@@ -214,8 +230,8 @@ def sign_up(request):
 def aboutus(request):
     setting = Setting.objects.first()
     page = 'About'
-    category = Category.objects.all()
-    menu = Menu.objects.all()
+    category = Category.objects.filter(status=True)
+    menu = Menu.objects.filter(status=True)
     context = {
         'setting': setting,
         'page': page,
@@ -228,8 +244,8 @@ def aboutus(request):
 def references(request):
     setting = Setting.objects.first()
     page = 'References'
-    category = Category.objects.all()
-    menu = Menu.objects.all()
+    category = Category.objects.filter(status=True)
+    menu = Menu.objects.filter(status=True)
     context = {
         'setting': setting,
         'page': page,
@@ -242,8 +258,8 @@ def references(request):
 def contact(request):
     setting = Setting.objects.first()
     page = 'Contact'
-    category = Category.objects.all()
-    menu = Menu.objects.all()
+    category = Category.objects.filter(status=True)
+    menu = Menu.objects.filter(status=True)
     if request.method == 'POST':
         form = ContactForm(request.POST)
         if form.is_valid():
@@ -269,16 +285,16 @@ def contact(request):
 
 
 def menu(request, id):
-    content = get_object_or_404(Content, menu_id=id)
+    content = get_object_or_404(Content, menu_id=id, status=True)
     link = '/content/' + str(content.id)+'/menu'
     return HttpResponseRedirect(link)
 
 
 def contentdetail(request, id, slug):
     setting = Setting.objects.first()
-    category = Category.objects.all()
-    menu = Menu.objects.all()
-    content = get_object_or_404(Content, id=id)
+    category = Category.objects.filter(status=True)
+    menu = Menu.objects.filter(status=True)
+    content = get_object_or_404(Content, id=id, status=True)
     images = CImages.objects.filter(content_id=id)
     page = str(content.title)
 
@@ -295,9 +311,9 @@ def contentdetail(request, id, slug):
 
 def faq(request):
     setting = Setting.objects.first()
-    category = Category.objects.all()
-    menu = Menu.objects.all()
-    faqs = Faq.objects.all().order_by('ordernumber')
+    category = Category.objects.filter(status=True)
+    menu = Menu.objects.filter(status=True)
+    faqs = Faq.objects.filter(status=True).order_by('ordernumber')
     context = {
         'setting': setting,
         'category': category,

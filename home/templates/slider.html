@@ -9,7 +9,7 @@
           <div class="col-md-6 ftco-animate">
           	<div class="text">
           		<h2>{{slide.city|upper}}/{{slide.country|upper}}</h2>
-              <h1 class="mb-3">{{slide.title|upper}}</h1>
+              <h1 class="mb-3"><a style="color:whilte;"href="{% url 'hotel' slide.id slide.slug %}">{{slide.title|upper}}</a></h1>
             </div>
           </div>
         </div>

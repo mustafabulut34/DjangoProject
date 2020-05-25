@@ -28,9 +28,9 @@ def new_reservation(request, id):
 
     setting = Setting.objects.first()
     page = 'New Reservation'
-    category = Category.objects.all()
+    category = Category.objects.filter(status=True)
     profile = get_object_or_404(UserProfile, user=request.user)
-    room = get_object_or_404(Room, id=id)
+    room = get_object_or_404(Room, id=id, status=True)
     total = room.price * days
 
     form = ReservationForm()

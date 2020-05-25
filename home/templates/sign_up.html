@@ -4,6 +4,15 @@
 <br>
 <div class="container" style="min-height:600px;">
     <div class="row d-flex justify-content-center">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}" role="alert">
+                    {{ message | safe}}
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+    <div class="row d-flex justify-content-center">
         <form action="{% url 'sign_up' %}" method="post">
             {% csrf_token %}
             

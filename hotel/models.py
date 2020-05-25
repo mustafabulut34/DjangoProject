@@ -6,8 +6,8 @@ from ckeditor_uploader.fields import RichTextUploadingField
 from mptt.models import MPTTModel, TreeForeignKey
 
 STATUS = (
-    ('True', 'Evet'),
-    ('False', 'Hayır'),
+    ('True', 'True'),
+    ('False', 'False'),
 )
 
 
@@ -84,6 +84,7 @@ class Hotel(models.Model):
 class Room(models.Model):
     hotel_id = models.ForeignKey(Hotel, on_delete=models.CASCADE)
     title = models.CharField(max_length=30)
+    keywords = models.CharField(max_length=255)
     description = RichTextUploadingField()
     image = models.ImageField(blank=True, upload_to='images/')
     price = models.IntegerField(blank=False)
