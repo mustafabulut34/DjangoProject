@@ -35,10 +35,18 @@
             </li>
         {% endrecursetree %}
         {% endif %}
-
-        <li class="nav-item"><a href="/references" class="nav-link">References</a></li>
-        <li class="nav-item"><a href="/aboutus" class="nav-link">About Us</a></li>
-        <li class="nav-item"><a href="/contact" class="nav-link">Contact</a></li>
+        <li class="nav-item dropdown">
+            <a class="dropdown-toggle nav-link" href="{% url 'all-category'%}" id="dropdownMenuLink" aria-haspopup="true" aria-expanded="false">
+              {{setting.company}}
+            </a>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                <a href="/references" class="dropdown-item">References</a>
+                <a href="/aboutus" class="dropdown-item">About Us</a>
+                <a href="/contact" class="dropdown-item">Contact</a>
+                <a href="/faq" class="dropdown-item">FAQ</a>
+            </div>
+        </li>
+        
       </ul>
       <ul class="navbar-nav mr-right">
       {% if user.id is None %}

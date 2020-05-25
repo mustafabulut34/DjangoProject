@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404
-from .models import Setting, ContactForm, ContactFormMessage
+from .models import Setting, ContactForm, ContactFormMessage, Faq
 from django.http import HttpResponseRedirect, HttpResponse, Http404
 from django.contrib import messages
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
@@ -291,3 +291,18 @@ def contentdetail(request, id, slug):
         'page': page
     }
     return render(request, 'content_detail.html', context)
+
+
+def faq(request):
+    setting = Setting.objects.first()
+    category = Category.objects.all()
+    menu = Menu.objects.all()
+    faqs = Faq.objects.all().order_by('ordernumber')
+    context = {
+        'setting': setting,
+        'category': category,
+        'menu': menu,
+        'faqs': faqs,
+        'page': 'FAQ'
+    }
+    return render(request, 'faq.html', context)

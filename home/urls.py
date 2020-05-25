@@ -18,5 +18,6 @@ urlpatterns = [
     path('content/<int:id>/<slug:slug>/',
          views.contentdetail, name="contentdetail"),
     path('menu/<int:id>', views.menu, name="menu"),
+    path('faq/', views.faq, name="faq")
 
 ]

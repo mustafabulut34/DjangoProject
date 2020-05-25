@@ -1,0 +1,45 @@
+{% extends 'homebase.html' %}
+{% load static %}
+
+{% block title %}{{ page }}{% endblock %}
+{% block keywords %}{{ rooms.first.hotel_id.category.keywords }} {% endblock %}
+{% block description %} {{ rooms.first.hotel_id.category.description }} {% endblock %}
+{% block head %}
+    <link rel='shortcut icon' type='image/x-icon' href='{{setting.image.url}}'/>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="/resources/demos/style.css">
+{% endblock  %}
+
+{% block content %}
+<section class="ftco-section ftco-no-pb ftco-room">
+	<div class="container px-0">
+
+		<div class="row no-gutters">
+            <div id="accordion">
+                {% if faqs%}
+                    {% for faq in faqs %}
+                        <h3 class="dropdown-toggle">{{faq.question}}</h3>
+                        <div>
+                            <p>
+                                {{faq.answer}}
+                            </p>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+		</div>
+	</div>
+</section>
+<br><br><br><br>
+
+{% endblock  %}
+
+{% block footer %}
+    <script>
+    $( function() {
+      $( "#accordion" ).accordion();
+    } );
+    </script>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+{% endblock  %}
