@@ -4,7 +4,8 @@ from .models import Reservation
 
 
 class ReservationAdmin(admin.ModelAdmin):
-    list_display = ['user', 'room', 'total', 'days', 'status']
+    list_display = ['user', 'room', 'total',
+                    'days', 'checkin', 'created_at', 'status']
     list_filter = ['status']
     list_editable = ['status']
     readonly_fields = ['user', 'room', 'name', 'surname',

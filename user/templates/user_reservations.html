@@ -27,6 +27,7 @@
                         <th scope="col">Days</th>
                         <th scope="col">Status</th>
                         <th scope="col"></th>
+                        <th scope="col"></th>
                       </tr>
                     </thead>
                     <tbody>
@@ -42,6 +43,7 @@
                         <td style="vertical-align: middle;">{{ reservation.days }}</td>
                         <td style="vertical-align: middle;">{{ reservation.status }}</td>
                         <td style="vertical-align: middle;"><a href="{% url 'user:reservation_detail' reservation.id %}" class="btn btn-primary">Detail</a></td>
+                        <td style="vertical-align: middle;">{% if reservation.status == "New" %}<a href="{% url 'reservation_delete' reservation.id %}" class="btn btn-danger">Cancel</a>{% endif %}</td>
                       </tr>
                     {% endfor %}
                     {% else %}

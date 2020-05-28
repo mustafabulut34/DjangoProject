@@ -72,3 +72,18 @@ def book(request, id):
             reservation.save()
             messages.success(request, "Reservation created!")
     return HttpResponseRedirect('/user/reservations')
+
+
+@login_required(login_url='/login')
+def reservation_delete(request, id):
+    reservation = get_object_or_404(
+        Reservation, id=id, user_id=request.user.id)
+
+    if(reservation.status == "New"):
+        reservation.delete()
+        messages.success(request, 'Reservation deleted!')
+    else:
+        messages.warning(
+            request, "Cannot cancel this reservation! Only can delete reservation which one status is new!")
+
+    return HttpResponseRedirect("/user/reservations")
