@@ -89,6 +89,7 @@ class Room(models.Model):
     image = models.ImageField(blank=True, upload_to='images/')
     price = models.IntegerField(blank=False)
     status = models.CharField(blank=True, max_length=5, choices=STATUS)
+    count = models.IntegerField(blank=False)
     slug = models.SlugField(null=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

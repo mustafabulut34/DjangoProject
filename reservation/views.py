@@ -60,6 +60,10 @@ def book(request, id):
             reservation = Reservation()
             reservation.user = request.user
             reservation.room = get_object_or_404(Room, id=id)
+            if(len(Reservation.objects.filter(room_id=id)) <= reservation.room.count):
+                messages.warning(
+                    request, "Sorry. We cannot reservate this room. No empty room!")
+                return HttpResponseRedirect("/room/"+str(id)+"/"+reservation.room.hotel_id.slug+"-"+reservation.room.slug)
             reservation.name = form.cleaned_data['name']
             reservation.surname = form.cleaned_data['surname']
             reservation.phone = form.cleaned_data['phone']

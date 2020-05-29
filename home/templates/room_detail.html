@@ -13,7 +13,6 @@
     }
   </style>
   <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-  <link rel="stylesheet" href="/resources/demos/style.css">
   <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
   <script>
@@ -27,6 +26,15 @@
     <section class="ftco-section">
       <div class="container">
         <div class="row">
+            <div class="col-md-12">
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}" role="alert">
+                        {{ message | safe}}
+                    </div>
+                {% endfor %}
+            {% endif %}
+            </div>
             <div class="col-md-12 heading-section text-center ftco-animate fadeInUp ftco-animated">
     	        <span style="font-size: 30px" class="subheading">{{room.hotel_id.title}}</span><br><br>
             </div>
@@ -42,11 +50,11 @@
                       </ol>
                       <div class="carousel-inner">
                       <div class="carousel-item active">
-                          <img class="d-block w-100" src="{{room.image.url}}" alt="{{room.title}}" style="border-radius:30px;">
+                          <img class="d-block w-100" src="{{room.image.url}}" alt="{{room.title}}" style="border-radius:30px;" >
                       </div>
                       {% for image in images %}
                         <div class="carousel-item">
-                          <img class="d-block w-100" src="{{image.image.url}}" alt="{{image.title}}" style="border-radius:30px;">
+                          <img class="d-block w-100" src="{{image.image.url}}" alt="{{image.title}}" style="border-radius:30px; height:740px;">
                         </div>
                       {% endfor %}
                       </div>
@@ -62,26 +70,32 @@
           		</div>
             <!--end slider-->
           		<div class="col-md-12 room-single mt-4 mb-5 ftco-animate">
-          			<h2 class="mb-4">{{room.title}} <span>- (4 Available rooms)</span></h2>
-    						<p>{{room.description | safe}}</p>
+                {% if availible > 0  %}
+          			<h2 class="mb-4">{{room.title}} <span>- ({{availible}} Available rooms)</span></h2>
+    						{% else %}
+                <h2 class="mb-4">{{room.title}} <span style="color:red;">- (No empty room)</span></h2>
+                {% endif %}
+                
     						<div class="d-md-flex mt-5 mb-5">
     							<ul class="list">
 	    							<li><span>Price:</span> ${{room.price}} / Day</li>
 	    							<li><span>Star:</span>
-                        <span class="fa fa-star " {% if room.hotel_id.star >= "1" %}style="color:orange"{% endif %}></span>
-                        <span class="fa fa-star " {% if room.hotel_id.star >= "2" %}style="color:orange"{% endif %}></span>
-                        <span class="fa fa-star " {% if room.hotel_id.star >= "3" %}style="color:orange"{% endif %}></span>
-                        <span class="fa fa-star " {% if room.hotel_id.star >= "4" %}style="color:orange"{% endif %}></span>
-                        <span class="fa fa-star " {% if room.hotel_id.star >= "5" %}style="color:orange"{% endif %}></span>
+                        <span class="fa fa-star " {% if room.hotel_id.star >= 1 %}style="color:orange"{% endif %}></span>
+                        <span class="fa fa-star " {% if room.hotel_id.star >= 2 %}style="color:orange"{% endif %}></span>
+                        <span class="fa fa-star " {% if room.hotel_id.star >= 3 %}style="color:orange"{% endif %}></span>
+                        <span class="fa fa-star " {% if room.hotel_id.star >= 4 %}style="color:orange"{% endif %}></span>
+                        <span class="fa fa-star " {% if room.hotel_id.star >= 5 %}style="color:orange"{% endif %}></span>
                     </li>
 	    						</ul>
-                  
 	    						<ul class="list ml-md-5">
 	    							<li><span>Phone:</span><a href="tel://{{room.hotel_id.phone}}">{{room.hotel_id.phone}}</a></li>
 	    							<li><span>Address:</span> {{room.hotel_id.address}}</li>
 	    						</ul>
     						</div>
+
+                <p>{{room.description | safe}}</p>
           		</div>
+              {% if availible > 0 %}
               <div class="col-md-12 room-single mt-4 mb-5 ftco-animate">
                 <form action="/reservation/new_reservation/{{room.id}}" method="post">
                     {% csrf_token %}
@@ -90,21 +104,13 @@
                     <input class="btn btn-primary" type="submit" value="Book!">
                 </form>
               </div>
+              {% endif %}
           		<div class="col-md-12 properties-single ftco-animate mb-5 mt-4">
           			<h4 class="mb-4">Comments</h4>
           			<div class="row">
           				<div class="col-md-12">
                       <form action="/hotel/addcomment/{{room.id}}" method="post" class="bg-light p-5 contact-form">
                         {% csrf_token %}
-                        <div class="form-group">
-                        {% if messages %}
-                          {% for message in messages %}
-                              <div class="alert alert-{{ message.tags }}" role="alert">
-                                  {{ message | safe}}
-                              </div>
-                          {% endfor %}
-                        {% endif %}
-                        </div>
                           <div class="form-group">
                           
                           <ul class="rate-area">
