@@ -49,7 +49,7 @@
 		    					</div>
 		    				</div>
         				</div>
-        				<div class="col-md d-flex py-md-4">
+        				<!--<div class="col-md d-flex py-md-4">
         					<div class="form-group align-self-stretch d-flex align-items-end">
         						<div class="wrap align-self-stretch py-3 px-4">
 		      						<label for="#">Guests</label>
@@ -68,10 +68,10 @@
 			    	          		</div>
 			    	        	</div>
 	            	  		</div>
-        				</div>
+        				</div>-->
         				<div class="col-md d-flex">
         					<div class="form-group d-flex align-self-stretch">
-		        	      		<input type="submit" class="btn btn-primary py-5 py-md-3 px-4 align-self-stretch d-block" value="Check Availability">
+		        	      		<input type="submit" class="btn btn-primary py-5 py-md-3 px-4 align-self-stretch d-block" value="Search Rooms">
 		        	    	</div>
         				</div>
         			</div>
@@ -84,7 +84,7 @@
   <div class="container">
   	<div class="row justify-content-center mb-5 pb-3">
       <div class="col-md-7 heading-section text-center ftco-animate">
-      	<span class="subheading">Welcome to Harbor Lights Hotel</span>
+      	<span class="subheading">Welcome to {{setting.company}}</span>
         <h2 class="mb-4">You'll Never Want To Leave</h2>
       </div>
     </div>  
@@ -186,8 +186,8 @@
 	<div class="container-fluid px-0">
 		<div class="row no-gutters justify-content-center mb-5 pb-3">
       <div class="col-md-7 heading-section text-center ftco-animate">
-      	<span class="subheading">Harbor Lights Rooms</span>
-        <h2 class="mb-4">Hotel Master's Rooms</h2>
+      	<span class="subheading">{{setting.company}} Rooms</span>
+        <h2 class="mb-4">Random Rooms</h2>
       </div>
     </div>  
 		<div class="row no-gutters">

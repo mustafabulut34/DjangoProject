@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <style>
     .checked {
-      color: orange;
+      color: gold;
     }
   </style>
   <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
@@ -80,11 +80,10 @@
     							<ul class="list">
 	    							<li><span>Price:</span> ${{room.price}} / Day</li>
 	    							<li><span>Star:</span>
-                        <span class="fa fa-star " {% if room.hotel_id.star >= 1 %}style="color:orange"{% endif %}></span>
-                        <span class="fa fa-star " {% if room.hotel_id.star >= 2 %}style="color:orange"{% endif %}></span>
-                        <span class="fa fa-star " {% if room.hotel_id.star >= 3 %}style="color:orange"{% endif %}></span>
-                        <span class="fa fa-star " {% if room.hotel_id.star >= 4 %}style="color:orange"{% endif %}></span>
-                        <span class="fa fa-star " {% if room.hotel_id.star >= 5 %}style="color:orange"{% endif %}></span>
+                        
+                        {% for i in "12345"  %}
+                            <span class="fa fa-star "{% if room.hotel_id.star >= forloop.counter %}style="color:gold"{% endif %}></span>
+                        {% endfor %}
                     </li>
 	    						</ul>
 	    						<ul class="list ml-md-5">
@@ -147,11 +146,9 @@
                   <div class="comment-body">
                     <h3>{{comment.user}}</h3>
                     <div class="meta">{{comment.created_at}}</div>&ensp;
-                    <span class="fa fa-star {% if comment.rate >= 1 %}checked{% endif %}"></span>
-                    <span class="fa fa-star {% if comment.rate >= 2 %}checked{% endif %}"></span>
-                    <span class="fa fa-star {% if comment.rate >= 3 %}checked{% endif %}"></span>
-                    <span class="fa fa-star {% if comment.rate >= 4 %}checked{% endif %}"></span>
-                    <span class="fa fa-star {% if comment.rate >= 5 %}checked{% endif %}"></span>
+                    {% for i in "12345"  %}
+                      <span class="fa fa-star {% if comment.rate >= forloop.counter %}checked{% endif %}"></span>
+                    {% endfor %}
                     <h5>{{comment.subject}}</h5>
                     <p>{{comment.comment}}</p>
                   </div>

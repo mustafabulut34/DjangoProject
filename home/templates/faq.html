@@ -1,9 +1,9 @@
 {% extends 'homebase.html' %}
 {% load static %}
 
-{% block title %}{{ page }}{% endblock %}
-{% block keywords %}{{ rooms.first.hotel_id.category.keywords }} {% endblock %}
-{% block description %} {{ rooms.first.hotel_id.category.description }} {% endblock %}
+{% block title %}{{ page }} - {{setting.company}}{% endblock %}
+{% block keywords %}{{ page }} {{setting.company}}{% endblock %}
+{% block description %} {{ page }} {{setting.company}}{% endblock %}
 {% block head %}
     <link rel='shortcut icon' type='image/x-icon' href='{{setting.image.url}}'/>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">

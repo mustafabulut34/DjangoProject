@@ -131,6 +131,7 @@ def search(request):
     if request.method == 'POST':
         form = SearchForm(request.POST)
         if form.is_valid():
+            setting = Setting.objects.first()
             category = Category.objects.filter(status=True)
             menu = Menu.objects.filter(status=True)
             query = form.cleaned_data['query']
@@ -142,10 +143,11 @@ def search(request):
                 rooms = Room.objects.filter(
                     title__icontains=query, status=True, hotel_id__status=True)
             context = {
+                'setting': setting,
                 'category': category,
                 'menu': menu,
                 'rooms': rooms,
-                'page': 'Search Rooms',
+                'page': 'Search Room',
                 'lastForm': form
             }
             return render(request, 'rooms_search.html', context)
@@ -280,6 +282,9 @@ def contact(request):
             data.ip = request.META.get('REMOTE_ADDR')
             data.save()
             messages.success(request, "Your message has been sent. Thank you!")
+            return HttpResponseRedirect('/contact')
+        else:
+            messages.warning(request, "Please check form! "+str(form.errors))
             return HttpResponseRedirect('/contact')
 
     form = ContactForm()

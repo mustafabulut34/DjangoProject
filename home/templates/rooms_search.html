@@ -2,9 +2,9 @@
 {% load static %}
 {% load mptt_tags %}
 
-{% block title %}Search Rooms{% endblock %}
-{% block keywords %}Search rooms{% endblock %}
-{% block description %} Search Rooms {% endblock %}
+{% block title %}{{page}}{% endblock %}
+{% block keywords %}{{page}}{% endblock %}
+{% block description %}{{page}}{% endblock %}
 {% block head %}
   <link rel='shortcut icon' type='image/x-icon' href='{{setting.image.url}}'/>
     <!-- jQuery UI !-->
@@ -61,7 +61,7 @@
 		    					</div>
 		    				</div>
         				</div>
-        				<div class="col-md d-flex py-md-4">
+        				<!--<div class="col-md d-flex py-md-4">
         					<div class="form-group align-self-stretch d-flex align-items-end">
         						<div class="wrap align-self-stretch py-3 px-4">
 		      						<label for="#">Guests</label>
@@ -80,10 +80,10 @@
 			    	          		</div>
 			    	        	</div>
 	            	  		</div>
-        				</div>
+        				</div>-->
         				<div class="col-md d-flex">
         					<div class="form-group d-flex align-self-stretch">
-		        	      		<input type="submit" class="btn btn-primary py-5 py-md-3 px-4 align-self-stretch d-block" value="Check Availability">
+		        	      		<input type="submit" class="btn btn-primary py-5 py-md-3 px-4 align-self-stretch d-block" value="Search Room">
 		        	    	</div>
         				</div>
         			</div>

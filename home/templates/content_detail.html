@@ -1,9 +1,9 @@
 {% extends 'homebase.html' %}
 {% load static %}
 
-{% block title %}{{page.title}} - {{ setting.company }}{% endblock %}
-{% block keywords %}{{ setting.keywords }} {% endblock %}
-{% block description %} {{setting.description}} {% endblock %}
+{% block title %}{{page.title}}  {{ setting.company }}{% endblock %}
+{% block keywords %}{{page.title}}  {{ setting.company }} {% endblock %}
+{% block description %} {{page.title}}  {{ setting.company }} {% endblock %}
 {% block head %}<link rel='shortcut icon' type='image/x-icon' href='{{setting.image.url}}'/>{% endblock  %}
 
 {% block content %}
