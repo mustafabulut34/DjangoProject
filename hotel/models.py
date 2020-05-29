@@ -45,18 +45,18 @@ class Category(MPTTModel):
 
 class Hotel(models.Model):
     STAR = (
-        ('One', '1'),
-        ('Two', '2'),
-        ('Three', '3'),
-        ('Four', '4'),
-        ('Five', '5'),
+        ('1', '1'),
+        ('2', '2'),
+        ('3', '3'),
+        ('4', '4'),
+        ('5', '5'),
     )
     title = models.CharField(max_length=30)
     keywords = models.CharField(max_length=255)
     description = RichTextUploadingField()
     image = models.ImageField(blank=True, upload_to='images/')
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    star = models.CharField(blank=True, max_length=10, choices=STAR)
+    star = models.IntegerField(blank=True, choices=STAR)
     address = models.CharField(max_length=80)
     city = models.CharField(max_length=20)
     country = models.CharField(max_length=20)
