@@ -22,7 +22,7 @@ class Setting(models.Model):
     smtpemail = models.EmailField(blank=True)
     smtppassword = models.CharField(max_length=50, blank=True)
     smtpport = models.IntegerField(blank=True, null=True)
-    image = models.ImageField(blank=True, upload_to='images/')
+    image = models.ImageField(blank=True, upload_to='images/setting/')
     facebook = models.CharField(max_length=80, blank=True)
     instagram = models.CharField(max_length=80, blank=True)
     twitter = models.CharField(max_length=80, blank=True)

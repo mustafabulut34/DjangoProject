@@ -110,9 +110,9 @@
                 {% if rooms%}
                 {% for room in rooms %}
                   <tr>
-                    <th scope="row"> <img src="{{ room.image.url }}" alt="{{ room.description }}" style="height:100px;"> </th>
+                    <th scope="row"> <img src="{{ room.image.url }}" alt="{{ room.description }}" style="height:100px; width:200px;"> </th>
                     <td style="vertical-align: middle;"><a href="{% url 'room' room.id room.hotel_id.slug room.slug %}">{{ room.title }}</a></td>
-                    <td style="vertical-align: middle;">{{ room.hotel_id.title }}</td>
+                    <td style="vertical-align: middle;"><a href="{% url 'hotel' room.hotel_id.id room.hotel_id.slug %}">{{ room.hotel_id.title }}</a></td>
                     <td style="vertical-align: middle;">{{ room.hotel_id.category }}</td>
                     <td style="vertical-align: middle;">${{ room.price }}</td>
                   </tr>

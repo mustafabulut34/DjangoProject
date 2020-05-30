@@ -14,7 +14,7 @@ from .models import Setting, ContactForm, ContactFormMessage, Faq
 from reservation.models import Reservation
 from user.models import UserProfile
 from content.models import Menu, Content, CImages
-from hotel.models import Hotel, Category, Room, ImageRoom, CommentForm, Comment
+from hotel.models import Hotel, Category, Room, ImageRoom, CommentForm, Comment, ImageHotel
 
 
 def index(request):
@@ -58,7 +58,8 @@ def category(request, slug, id):
 def all_category(request):
     setting = Setting.objects.first()
     page = 'All Rooms'
-    rooms = Room.objects.filter(status=True, hotel_id__status=True)
+    rooms = Room.objects.filter(
+        status=True, hotel_id__status=True).order_by('?')
     category = Category.objects.filter(status=True)
     menu = Menu.objects.filter(status=True)
     context = {
@@ -76,6 +77,7 @@ def hotel(request, slug, id):
     rooms = Room.objects.filter(
         hotel_id=id, status=True, hotel_id__status=True)
     page = rooms.first().hotel_id.title
+    images = ImageHotel.objects.filter(hotel_id=id)
     menu = Menu.objects.filter(status=True)
     context = {
         'setting': setting,
@@ -83,6 +85,7 @@ def hotel(request, slug, id):
         'page': page,
         'category': category,
         'rooms': rooms,
+        'images': images,
         'pageControl': 'HOTEL',
     }
     return render(request, 'rooms.html', context)
@@ -208,7 +211,6 @@ def logout(request):
 def sign_up(request):
     if request.method == "POST":
         form = SignUpForm(request.POST)
-        print("FORM OKEY!")
         if form.is_valid():
             form.save()
             user = authenticate(
@@ -223,7 +225,6 @@ def sign_up(request):
         else:
             messages.warning(request, "Check Form! " + str(form.errors))
             return HttpResponseRedirect("/signup")
-    print("POST DEĞİL")
     form = SignUpForm()
     setting = Setting.objects.first()
     category = Category.objects.filter(status=True)

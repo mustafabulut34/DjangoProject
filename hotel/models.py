@@ -15,7 +15,7 @@ class Category(MPTTModel):
     title = models.CharField(max_length=30)
     keywords = models.CharField(max_length=255)
     description = models.CharField(max_length=255)
-    image = models.ImageField(blank=True, upload_to='images/')
+    image = models.ImageField(blank=True, upload_to='images/category/')
     status = models.CharField(max_length=10, choices=STATUS)
     slug = models.SlugField(null=False, unique=True)
     parent = TreeForeignKey(
@@ -45,16 +45,16 @@ class Category(MPTTModel):
 
 class Hotel(models.Model):
     STAR = (
-        ('1', '1'),
-        ('2', '2'),
-        ('3', '3'),
-        ('4', '4'),
-        ('5', '5'),
+        (1, 1),
+        (2, 2),
+        (3, 3),
+        (4, 4),
+        (5, 5),
     )
     title = models.CharField(max_length=30)
     keywords = models.CharField(max_length=255)
     description = RichTextUploadingField()
-    image = models.ImageField(blank=True, upload_to='images/')
+    image = models.ImageField(blank=True, upload_to='images/hotel/')
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     star = models.IntegerField(blank=True, choices=STAR)
     address = models.CharField(max_length=80)
@@ -86,7 +86,7 @@ class Room(models.Model):
     title = models.CharField(max_length=30)
     keywords = models.CharField(max_length=255)
     description = RichTextUploadingField()
-    image = models.ImageField(blank=True, upload_to='images/')
+    image = models.ImageField(blank=True, upload_to='images/room/')
     price = models.IntegerField(blank=False)
     status = models.CharField(blank=True, max_length=5, choices=STATUS)
     count = models.IntegerField(blank=False)
@@ -103,6 +103,9 @@ class Room(models.Model):
 
     def get_absolute_url(self):
         return reverse("category_detail", kwargs={"slug": self.slug})
+
+    def category(self):
+        return self.hotel_id.category
 
 
 class Comment(models.Model):
@@ -137,7 +140,7 @@ class CommentForm(ModelForm):
 class ImageHotel(models.Model):
     hotel_id = models.ForeignKey(Hotel, on_delete=models.CASCADE)
     title = models.CharField(blank=True, max_length=30)
-    image = models.ImageField(blank=False, upload_to='images/')
+    image = models.ImageField(blank=False, upload_to='images/hotel/')
 
     def __str__(self):
         return self.title
@@ -150,7 +153,7 @@ class ImageHotel(models.Model):
 class ImageRoom(models.Model):
     room_id = models.ForeignKey(Room, on_delete=models.CASCADE)
     title = models.CharField(blank=True, max_length=30)
-    image = models.ImageField(blank=False, upload_to='images/')
+    image = models.ImageField(blank=False, upload_to='images/room/')
 
     def __str__(self):
         return self.title

@@ -25,14 +25,15 @@ def new_reservation(request, id):
         if form.is_valid():
             days = form.cleaned_data['days']
             checkin = form.cleaned_data['checkin']
-
+        else:
+            messages.warning(request, str(form.errors))
+            return HttpResponseRedirect("/reservation/new_reservation/"+id)
     setting = Setting.objects.first()
     page = 'New Reservation'
     category = Category.objects.filter(status=True)
     profile = get_object_or_404(UserProfile, user=request.user)
     room = get_object_or_404(Room, id=id, status=True)
     total = room.price * days
-
     form = ReservationForm()
     form.initial["days"] = days
     form.initial['checkin'] = checkin
@@ -60,7 +61,8 @@ def book(request, id):
             reservation = Reservation()
             reservation.user = request.user
             reservation.room = get_object_or_404(Room, id=id)
-            if(len(Reservation.objects.filter(room_id=id)) <= reservation.room.count):
+            print(len(Reservation.objects.filter(room_id=id)))
+            if(len(Reservation.objects.filter(room_id=id)) >= reservation.room.count):
                 messages.warning(
                     request, "Sorry. We cannot reservate this room. No empty room!")
                 return HttpResponseRedirect("/room/"+str(id)+"/"+reservation.room.hotel_id.slug+"-"+reservation.room.slug)

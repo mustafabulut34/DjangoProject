@@ -89,7 +89,8 @@ def reservations(request):
     setting = Setting.objects.first()
     category = Category.objects.filter(status=True)
     menu = Menu.objects.filter(status=True)
-    reservations = Reservation.objects.filter(user_id=request.user.id)
+    reservations = Reservation.objects.filter(
+        user_id=request.user.id).order_by('-created_at')
     context = {
         'setting': setting,
         'category': category,

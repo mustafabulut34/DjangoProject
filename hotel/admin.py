@@ -24,8 +24,10 @@ class CategoryAdmin(admin.ModelAdmin):
 class CategoryAdmin2(DraggableMPTTAdmin):
     mptt_indent_field = "title"
     list_display = ('tree_actions', 'indented_title',
-                    'related_products_count', 'related_products_cumulative_count')
+                    'related_products_count', 'related_products_cumulative_count', 'status')
     list_display_links = ('indented_title',)
+    list_filter = ['status']
+    list_editable = ['status']
     prepopulated_fields = {'slug': ('title',)}
 
     def get_queryset(self, request):
@@ -68,7 +70,8 @@ class HotelAdmin(admin.ModelAdmin):
 
 
 class RoomAdmin(admin.ModelAdmin):
-    list_display = ['title', 'hotel_id', 'price', 'image_tag', 'status']
+    list_display = ['title', 'hotel_id',
+                    'category', 'price', 'image_tag', 'status']
     list_filter = ['hotel_id', 'status']
     list_editable = ['status']
     list_display_links = ['title']
