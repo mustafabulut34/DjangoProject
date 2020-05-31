@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from ckeditor_uploader.fields import RichTextUploadingField
 from mptt.models import MPTTModel, TreeForeignKey
 
+from django.urls import reverse
 STATUS = (
     ('True', 'True'),
     ('False', 'False'),
@@ -78,7 +79,7 @@ class Hotel(models.Model):
     image_tag.short_description = 'Image'
 
     def get_absolute_url(self):
-        return reverse("category_detail", kwargs={"slug": self.slug})
+        return reverse("hotel", kwargs={"id": self.id, "slug": self.slug})
 
 
 class Room(models.Model):
@@ -102,7 +103,7 @@ class Room(models.Model):
     image_tag.short_description = 'Image'
 
     def get_absolute_url(self):
-        return reverse("category_detail", kwargs={"slug": self.slug})
+        return reverse("room", kwargs={"id": self.id, "hotelslug": self.hotel_id.slug, "roomslug": self.slug})
 
     def category(self):
         return self.hotel_id.category

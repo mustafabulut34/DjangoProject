@@ -34,8 +34,8 @@
                     {% if reservations%}
                     {% for reservation in reservations %}
                       <tr>
-                        <td style="vertical-align: middle;"><a href="{% url 'hotel' reservation.room.hotel_id.id reservation.room.hotel_id.slug %}">{{reservation.room.hotel_id}}</a></td>
-                        <td style="vertical-align: middle;"><a href="{% url 'room' reservation.room.id reservation.room.hotel_id.slug reservation.room.slug %}">{{ reservation.room }}</a></td>
+                        <td style="vertical-align: middle;"><a href="{{reservation.room.hotel_id.get_absolute_url}}">{{reservation.room.hotel_id}}</a></td>
+                        <td style="vertical-align: middle;"><a href="{{reservation.room.get_absolute_url}}">{{ reservation.room }}</a></td>
                         <td style="vertical-align: middle;">{{ reservation.name }}</td>
                         <td style="vertical-align: middle;">{{ reservation.surname }}</td>
                         <td style="vertical-align: middle;">{{ reservation.total }}</td>

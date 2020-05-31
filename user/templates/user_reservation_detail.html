@@ -14,11 +14,11 @@
                         </tr>
                         <tr>
                             <th scope="">Hotel:</th>
-                            <td><a href="{% url 'hotel' reservation.room.hotel_id.id reservation.room.hotel_id.slug %}">{{reservation.room.hotel_id}}</a></td>
+                            <td><a href="{{reservation.room.hotel_id.get_absolute_url}}">{{reservation.room.hotel_id}}</a></td>
                         </tr>
                         <tr>
                             <th scope="">Room:</th>
-                            <td><a href="{% url 'room' reservation.room.id reservation.room.hotel_id.slug reservation.room.slug %}">{{ reservation.room }}</a></td>
+                            <td><a href="{{reservation.room.get_absolute_url}}">{{ reservation.room }}</a></td>
                         </tr>
                         <tr>
                             <th scope="">Name Surname:</th>

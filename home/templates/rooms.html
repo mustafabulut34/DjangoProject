@@ -100,18 +100,18 @@
 		{% for room in rooms %}
 			<div class="col-lg-6">
 				<div class="room-wrap d-md-flex ftco-animate">
-					<a href="{% url 'room' room.id room.hotel_id.slug room.slug %}" class="img" style="background-image: url({{room.image.url}});"></a>
+					<a href="{{room.get_absolute_url}}" class="img" style="background-image: url({{room.image.url}});"></a>
 					<div class="half left-arrow d-flex align-items-center">
 						<div class="text p-4 text-center">
-							<h2 class="mb-3"><a href="{% url 'hotel' room.hotel_id.id room.hotel_id.slug %}" style="color:black">{% if room.hotel_id.title|length > 20  %}{{room.hotel_id.title|slice:17}}...{% else %}{{room.hotel_id.title}}{% endif %}</a></h2>
+							<h2 class="mb-3"><a href="{{room.hotel_id.get_absolute_url}}" style="color:black">{% if room.hotel_id.title|length > 20  %}{{room.hotel_id.title|slice:17}}...{% else %}{{room.hotel_id.title}}{% endif %}</a></h2>
 							<p class="star mb-0">
 								{% for i in "12345" %}
 									<span class="ion-ios-star" style="{% if room.hotel_id.star >= forloop.counter %} color:gold;{% else %} color:gray;{% endif %}"></span>
 								{% endfor %}
 							</p>
 							<p class="mb-0"><span class="price mr-1">${{room.price}}</span> <span class="per">per night</span></p>
-    						<h3 class="mb-3"><a href="{% url 'room' room.id room.hotel_id.slug room.slug %}">{{room.title}}</a></h3>
-    						<p class="pt-1"><a href="{% url 'room' room.id room.hotel_id.slug room.slug %}" class="btn-custom px-3 py-2 rounded">View Details <span class="icon-long-arrow-right"></span></a></p>
+    						<h3 class="mb-3"><a href="{{room.get_absolute_url}}">{{room.title}}</a></h3>
+    						<p class="pt-1"><a href="{{room.get_absolute_url}}" class="btn-custom px-3 py-2 rounded">View Details <span class="icon-long-arrow-right"></span></a></p>
 						</div>
 					</div>
 				</div>

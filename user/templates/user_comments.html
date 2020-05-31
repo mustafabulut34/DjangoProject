@@ -32,8 +32,8 @@
                     {% if comments%}
                     {% for comment in comments %}
                       <tr>
-                        <td style="vertical-align: middle;"><a href="{% url 'hotel' comment.room.hotel_id.id comment.room.hotel_id.slug %}">{{comment.room.hotel_id}}</a></td>
-                        <td style="vertical-align: middle;"><a href="{% url 'room' comment.room.id comment.room.hotel_id.slug comment.room.slug %}">{{ comment.room }}</a></td>
+                        <td style="vertical-align: middle;"><a href="{{comment.room.hotel_id.get_absolute_url}}">{{comment.room.hotel_id}}</a></td>
+                        <td style="vertical-align: middle;"><a href="{{comment.room.get_absolute_url}}">{{ comment.room }}</a></td>
                         <td style="vertical-align: middle;">{{ comment.subject | slice:"5" }}{% if comment.subject|length > 5 %}...{% endif %}</td>
                         <td style="vertical-align: middle;">{{ comment.comment | slice:"15"}}{% if comment.comment|length > 15 %}...{% endif %}</td>
                         <td style="vertical-align: middle;">{{ comment.created_at }}</td>
