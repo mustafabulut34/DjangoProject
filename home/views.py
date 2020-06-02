@@ -10,11 +10,15 @@ from reservation.forms import ReservationDayForm
 
 
 import json
+from datetime import date
+
 from .models import Setting, ContactForm, ContactFormMessage, Faq
 from reservation.models import Reservation
 from user.models import UserProfile
 from content.models import Menu, Content, CImages
 from hotel.models import Hotel, Category, Room, ImageRoom, CommentForm, Comment, ImageHotel
+
+from reservation.views import get_earliest_date
 
 
 def index(request):
@@ -95,7 +99,9 @@ def room(request, hotelslug, roomslug, id):
     setting = Setting.objects.first()
     menu = Menu.objects.filter(status=True)
     room = get_object_or_404(Room, id=id, status=True, hotel_id__status=True)
-    reservation_count = len(Reservation.objects.filter(room_id=id))
+    earliest_date = get_earliest_date(id)
+    reservation_count = len(Reservation.objects.filter(
+        room_id=id, status__in=['New', 'Accepted'], checkin__lte=date.today()))
     availible = room.count - reservation_count
     images = ImageRoom.objects.filter(room_id=id)
     page = 'room'
@@ -125,7 +131,8 @@ def room(request, hotelslug, roomslug, id):
         'images': images,
         'form': form,
         'comments': comments,
-        'reservationForm': reservationForm
+        'reservationForm': reservationForm,
+        'earliest_date': earliest_date
     }
     return render(request, 'room_detail.html', context)
 

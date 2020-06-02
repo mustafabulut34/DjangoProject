@@ -10,6 +10,7 @@ class Reservation(models.Model):
         ('New', 'New'),
         ('Accepted', 'Accepted'),
         ('Canceled', 'Canceled'),
+        ('Finished', 'Finished')
     )
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     room = models.ForeignKey(Room, on_delete=models.CASCADE)

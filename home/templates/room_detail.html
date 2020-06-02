@@ -72,9 +72,9 @@
             <!--end slider-->
           		<div class="col-md-12 room-single mt-4 mb-5 ftco-animate">
                 {% if availible > 0  %}
-          			<h2 class="mb-4">{{room.title}} <span>- ({{availible}} Available rooms)</span></h2>
+          			<h2 class="mb-4">{{room.title}} <span>- ({{availible}} Available rooms today)</span></h2>
     						{% else %}
-                <h2 class="mb-4">{{room.title}} <span style="color:red;">- (No empty room)</span></h2>
+                <h2 class="mb-4">{{room.title}} <span style="color:red;">- (No empty room today! Earliest date is {{earliest_date.checkout|date}})</span></h2>
                 {% endif %}
                 
     						<div class="d-md-flex mt-5 mb-5">
@@ -95,7 +95,7 @@
 
                 <p>{{room.description | safe}}</p>
           		</div>
-              {% if availible > 0 %}
+              {% if availible >= 0 %}
               <div class="col-md-12 room-single mt-4 mb-5 ftco-animate">
                 <form action="/reservation/new_reservation/{{room.id}}" method="post">
                     {% csrf_token %}

@@ -9,10 +9,32 @@ from datetime import date, timedelta
 from .forms import ReservationDayForm
 from django.contrib import messages
 # Create your views here.
+from django.db.models import Q
 
 
 def index(request, id):
     return HttpResponse('Room: ' + id)
+
+
+def get_earliest_date(id):
+    Reservation.objects.filter(
+        room__id=id, checkout__lte=date.today()).update(status='Finished')
+
+    reservations = Reservation.objects.filter(
+        room__id=id, checkout__gt=date.today()).order_by('checkout')
+
+    for reservation in reservations:
+        if len(reservations.filter(checkout=reservation.checkout)) > len(reservations.filter(checkin=reservation.checkout)):
+            return reservation
+    return reservations.last()
+
+
+def latest_checkin_reservation(id, reservation_count, chechkindate):
+    reservations = Reservation.objects.filter(
+        room__id=id, checkin__gt=chechkindate).order_by('checkin')
+    if reservations:
+        return reservations.first()
+    return -1
 
 
 @login_required(login_url='/login')
@@ -61,18 +83,32 @@ def book(request, id):
             reservation = Reservation()
             reservation.user = request.user
             reservation.room = get_object_or_404(Room, id=id)
-            print(len(Reservation.objects.filter(room_id=id)))
-            if(len(Reservation.objects.filter(room_id=id)) >= reservation.room.count):
-                messages.warning(
-                    request, "Sorry. We cannot reservate this room. No empty room!")
-                return HttpResponseRedirect("/room/"+str(id)+"/"+reservation.room.hotel_id.slug+"-"+reservation.room.slug)
-            reservation.name = form.cleaned_data['name']
-            reservation.surname = form.cleaned_data['surname']
-            reservation.phone = form.cleaned_data['phone']
             reservation.checkin = form.cleaned_data['checkin']
             reservation.days = form.cleaned_data['days']
             reservation.checkout = reservation.checkin + \
                 timedelta(days=reservation.days)
+
+            earliest_checkout_reservation = get_earliest_date(
+                id)
+            activate_stay_count = len(Reservation.objects.filter(
+                room_id=id, status__in=['New', 'Accepted'], checkin__lte=date.today()))
+            if activate_stay_count >= reservation.room.count:
+                if reservation.checkin < earliest_checkout_reservation.checkout:
+                    messages.warning(request, "Sorry. We cannot reservate this room. No empty room on this day! You can book earliest date -> " + str(
+                        earliest_checkout_reservation.checkout.strftime("%d %B, %Y")))
+                    return HttpResponseRedirect("/room/"+str(id)+"/"+reservation.room.hotel_id.slug+"-"+reservation.room.slug)
+                else:
+                    latest_checkin = latest_checkin_reservation(
+                        id, activate_stay_count, reservation.checkin)
+                    if latest_checkin != -1:
+                        if reservation.checkout > latest_checkin.checkin:
+                            messages.warning(request, "Sorry. We cannot reservate this room. You can book this room on date from " + str(
+                                reservation.checkin.strftime("%d %B, %Y")) + " to "+str(latest_checkin.checkin.strftime("%d %B, %Y")))
+                            return HttpResponseRedirect("/room/"+str(id)+"/"+reservation.room.hotel_id.slug+"-"+reservation.room.slug)
+            reservation.name = form.cleaned_data['name']
+            reservation.surname = form.cleaned_data['surname']
+            reservation.phone = form.cleaned_data['phone']
+
             reservation.total = reservation.room.price * reservation.days
             reservation.ip = request.META.get('REMOTE_ADDR')
             reservation.save()

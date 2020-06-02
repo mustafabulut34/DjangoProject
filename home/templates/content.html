@@ -197,7 +197,7 @@
 					<a href="{{room.get_absolute_url}}" class="img" style="background-image: url({{room.image.url}});"></a>
 					<div class="half left-arrow d-flex align-items-center">
 						<div class="text p-4 text-center">
-							<h2 class="mb-3"><a href="{{room.hotel_id.get_absolute_url}}" style="color:black">{{room.hotel_id.title}}</a></h2>
+							<h2 class="mb-3"><a href="{{room.hotel_id.get_absolute_url}}" style="color:black">{% if room.hotel_id.title|length > 20  %}{{room.hotel_id.title|slice:17}}...{% else %}{{room.hotel_id.title}}{% endif %}</a></h2>
 							<p class="star mb-0"><span class="ion-ios-star"></span><span class="ion-ios-star"></span><span class="ion-ios-star"></span><span class="ion-ios-star"></span><span class="ion-ios-star"></span></p>
 							<p class="mb-0"><span class="price mr-1">${{room.price}}</span> <span class="per">per night</span></p>
     						<h3 class="mb-3"><a href="{{room.get_absolute_url}}">{{room.title}}</a></h3>
