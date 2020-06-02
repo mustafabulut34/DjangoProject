@@ -43,7 +43,7 @@
                         <td style="vertical-align: middle;">{{ reservation.days }}</td>
                         <td style="vertical-align: middle;">{{ reservation.status }}</td>
                         <td style="vertical-align: middle;"><a href="{% url 'user:reservation_detail' reservation.id %}" class="btn btn-primary">Detail</a></td>
-                        <td style="vertical-align: middle;">{% if reservation.status == "New" %}<a href="{% url 'reservation_delete' reservation.id %}" class="btn btn-danger">Cancel</a>{% endif %}</td>
+                        <td style="vertical-align: middle;">{% if reservation.status == "New" %}<a href="{% url 'reservation_delete' reservation.id %}" onclick="return confirm('Reservation will be canceled! Are you sure?')" class="btn btn-danger">Cancel</a>{% endif %}</td>
                       </tr>
                     {% endfor %}
                     {% else %}

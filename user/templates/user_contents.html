@@ -34,7 +34,7 @@
                     {% if contents%}
                         {% for content in contents %}
                           <tr>
-                            <th scope="row"> <img src="{{ content.image.url }}" alt="{{ content.description }}" height=50"> </th>
+                            <th scope="row"> <img src="{{ content.image.url }}" alt="{{ content.description }}" height=50> </th>
                             <td style="vertical-align: middle;"><a href="{% url 'contentdetail' content.id content.slug %}">{{content.title}}</a></td>
                             <td style="vertical-align: middle;">{{ content.kind }}</td>
                             <td style="vertical-align: middle;">{% if content.menu %}{{ content.menu }}{% else %}-{% endif %}</td>
